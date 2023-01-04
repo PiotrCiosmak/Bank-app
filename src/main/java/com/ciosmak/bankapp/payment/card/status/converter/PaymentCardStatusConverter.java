@@ -35,18 +35,13 @@ public class PaymentCardStatusConverter implements AttributeConverter<PaymentCar
     @Override
     public PaymentCardStatus convertToEntityAttribute(String dbData)
     {
-        switch (dbData)
-        {
-            case "ACTIVATED":
-                return new Activated();
-            case "BLOCKED_PERMANENTLY":
-                return new BlockedPermanently();
-            case "BLOCKED_TEMPORARILY":
-                return new BlockedTemporarily();
-            case "NOT_ACTIVATED":
-                return new NotActivated();
-            default:
-                throw new UnsupportedOperationException("Nieobsługiwany stan karty płatniczej: " + dbData);
-        }
+        return switch (dbData)
+                {
+                    case "ACTIVATED" -> new Activated();
+                    case "BLOCKED_PERMANENTLY" -> new BlockedPermanently();
+                    case "BLOCKED_TEMPORARILY" -> new BlockedTemporarily();
+                    case "NOT_ACTIVATED" -> new NotActivated();
+                    default -> throw new UnsupportedOperationException("Nieobsługiwany stan karty płatniczej: " + dbData);
+                };
     }
 }
