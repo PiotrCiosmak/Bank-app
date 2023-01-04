@@ -15,26 +15,67 @@ Napisac plik redme.md
 
 
 REGEX TABEL W BAZIE DANYCH:
-currency:
-code - wszystkie litery wielkie
-exchangeRate - 123.45
+users:
+email - unique, regex
+password - bcrypt, regex
 
-payment_cards:
-first/last_name - Piotr Ciosmak
+addresses:
+street - capitalize every first letter
+house_number - capitalize all letters
+apartment_number - capitalize all letters, nullable
+post_code - 12345 -> 12-345
+town - capitalize every first letter
+country - capitalize every first letter
+
+identity_documents:
+release_date - YYYY-MM-DD
 expiry_date - YYYY-MM-DD
-pin - 1234
-card_number - generowany
-verification_value - generowany
-...per_day, withdrawal_fee, foreign_widrwaal_fee, maintenece_fee, debt_balance, max_debt - 1234.56
-max_number_of_transactions - nie ujemne
+series_and_number - ABC123456
+
+personal_data:
+first_name - capitalize every first letter
+last_name - capitalize every first letter
+phone_number - 123456789 -> +48123456789
+family_name - capitalize every first letter
+personal_identity_number - unique, 1234567891
+birth_place - capitalize every first letter
+nationality - capitalize every first letter
+mothers_name - capitalize every first letter
+mothers_maiden_name - capitalize every first letter
+
+bank_accounts:
+balance - max 2 digits after comma
+bank_account_number - unique, 26 digits
+international_bank_account_number - unique
+is_open - default true
+maintenance_fee - max 2 digits after comma
+interest - max 2 digits after comma in %, nullable
 
 transfers:
-sendet_amount - 123.45
-collected_amount - 123.45
-execution/postring_data - YYYY-MM-DD
+title
+amount_of_money - max 2 digits after comma
+execution_date - YYYY-MM-DD HH-MM-SS
+posting_date - YYYY-MM-DD-HH-MM-SS
 
-bank_account
-balance 123.34
-maintencace_fee - 234.54
-interenst - 54.4
-
+payment_cards:
+first_name - capitalize every first letter
+last_name - capitalize every first letter
+expiry_date - YYYY-MM-DD (current + 5 years)
+status (not_activated = 0, activated = 1, blocked_temporarily = 2, blocked_permanently = 3) design pattern state, default not_activated
+pin - 1234, bcrypt
+card_number - unique
+verification_value - bcrypt
+payment_limit_per_day - max 2 digits after comma
+withdraw_limit_per_day - max 2 digits after comma
+internet_transactions_limit_per day - max 2 digits after comma
+contactless_transactions_are_active - default false
+magnetic_strip_is_active - default false
+transactions_with_ddc_service_are_active - default false
+surcharge_transactions_are_active - default false
+withdrawal_fee_in_poland - max 2 digits after comma
+foreign_withdrawal_fee - max 2 digits after comma
+maintenance_fee - max 2 digits after comma
+minimum_number_of_transactions - >0
+debt_balance_is_active - default false
+debt_balance - max 2 digits after comma, nullable
+max_debt - max 2 digits after comma
