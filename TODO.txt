@@ -1,0 +1,40 @@
+Zrobić konfigurację bazy - DONE
+Zrobić schemat bazy danych - DONE
+Zrobić baze danych - DONE
+logowanie/rejestracja - DONE
+funkcja checkIfPasswordIsCorrect - ZROBIĆ
+Przerobić kod z C++ na kod Javy
+Dokończyć brakujące funkcjonalności w kodzie
+Połączyć bazę danych z kodem
+Zaimplementować wzorce projektowe
+
+Dla każdej funkcji, klasy itd. napisac dokumentację
+Zrobić testy jednostkowe
+Zrobić diagram UML
+Napisac plik redme.md
+
+
+REGEX TABEL W BAZIE DANYCH:
+currency:
+code - wszystkie litery wielkie
+exchangeRate - 123.45
+
+payment_cards:
+first/last_name - Piotr Ciosmak
+expiry_date - YYYY-MM-DD
+pin - 1234
+card_number - generowany
+verification_value - generowany
+...per_day, withdrawal_fee, foreign_widrwaal_fee, maintenece_fee, debt_balance, max_debt - 1234.56
+max_number_of_transactions - nie ujemne
+
+transfers:
+sendet_amount - 123.45
+collected_amount - 123.45
+execution/postring_data - YYYY-MM-DD
+
+bank_account
+balance 123.34
+maintencace_fee - 234.54
+interenst - 54.4
+
