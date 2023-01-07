@@ -2,6 +2,7 @@ package com.ciosmak.bankapp;
 
 import com.ciosmak.bankapp.menu.Menu;
 import com.ciosmak.bankapp.service.UserService;
+import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -23,12 +24,12 @@ public class BankAppApplication implements CommandLineRunner
     public void run(String[] args)
     {
         String loginOption = Menu.mainLoginMenu();
+        UserId userId = UserId.getInstance(0L);
         switch (loginOption)
         {
-            case "sign_in" -> userService.signIn();
-            case "register" -> userService.register();
+            case "sign_in" -> userService.signIn(userId);
+            case "register" -> userService.register(userId);
         }
-
     }
 
     private final UserService userService;

@@ -6,6 +6,7 @@ import com.ciosmak.bankapp.entity.PersonalData;
 import com.ciosmak.bankapp.entity.User;
 import com.ciosmak.bankapp.repository.PersonalDataRepository;
 import com.ciosmak.bankapp.repository.UserRepository;
+import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 @Service
 public class UserService extends AbstractService
 {
-    public void register()
+    public void register(UserId userId)
     {
         System.out.println("---REJESTRACJA---");
 
@@ -112,10 +113,10 @@ public class UserService extends AbstractService
                 identityDocument(IdentityDocument.builder().releaseDate(identityDocumentTmp.getReleaseDate()).expiryDate(identityDocumentTmp.getExpiryDate()).seriesAndNumber(identityDocumentTmp.getSeriesAndNumber()).build())
                 .build();
         userRepository.save(user);
-        //TODO USTAWIENIE USER_ID (SINGLETON)
+        userId.setId(user.getId());
     }
 
-    public void signIn()
+    public void signIn(UserId userId)
     {
         System.out.println("---LOGOWANIE---");
 
@@ -140,7 +141,7 @@ public class UserService extends AbstractService
                 if (checkIfPasswordIsCorrect(password, user.get().getPassword()))
                 {
                     System.out.println("Zalogowano");
-                    //TODO USTAWIENIE USER_ID (SINGLETON)
+                    userId.setId(user.get().getId());
                     break;
                 }
                 System.err.println("Błędne dane!!!\nSpróbuj ponownie");
