@@ -5,6 +5,7 @@ import com.ciosmak.bankapp.payment.card.status.converter.PaymentCardStatusConver
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -48,13 +49,13 @@ public class PaymentCard extends AbstractEntity
     private String verificationValue;
 
     @Column(name = "payment_limit_per_day", scale = 2, nullable = false)
-    private Double paymentLimitPerDay;
+    private BigDecimal paymentLimitPerDay;
 
     @Column(name = "withdraw_limit_per_day", scale = 2, nullable = false)
-    private Double withdrawLimitPerDay;
+    private BigDecimal withdrawLimitPerDay;
 
     @Column(name = "internet_transaction_limit_per_day", scale = 2, nullable = false)
-    private Double internetTransactionLimitPerDay;
+    private BigDecimal internetTransactionLimitPerDay;
 
     @Column(name = "contact_less_transactions_are_active", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean contactlessTransactionsAreActive;
@@ -69,13 +70,13 @@ public class PaymentCard extends AbstractEntity
     private boolean surchargeTransactionsAreActive;
 
     @Column(name = "withdrawal_fee_in_poland", scale = 2, nullable = false)
-    private Double withdrawalFeeInPoland;
+    private BigDecimal withdrawalFeeInPoland;
 
     @Column(name = "foreign_withdrawal_fee", scale = 2, nullable = false)
-    private Double foreignWithdrawalFee;
+    private BigDecimal foreignWithdrawalFee;
 
     @Column(name = "maintenance_fee", scale = 2, nullable = false)
-    private Double maintenanceFee;
+    private BigDecimal maintenanceFee;
 
     @Column(name = "minimum_number_of_transactions", nullable = false)
     private Integer minimumNumberOfTransactions;
@@ -84,10 +85,10 @@ public class PaymentCard extends AbstractEntity
     private boolean debtBalanceIsActive;
 
     @Column(name = "debt_balance", scale = 2)
-    private Double debtBalance;
+    private BigDecimal debtBalance;
 
     @Column(name = "max_debt", nullable = false, scale = 2)
-    private Double maxDebt;
+    private BigDecimal maxDebt;
 
     @OneToOne(mappedBy = "paymentCard", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private BankAccount bankAccount;
