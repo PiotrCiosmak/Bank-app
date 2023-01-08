@@ -150,6 +150,39 @@ public class UserService extends AbstractService
         }
     }
 
+    public void changePassword(UserId userId)
+    {
+        Optional<User> user = getUserById(userId);
+        String currentPassword, newPassword;
+
+        System.out.println("\n---ZMIANA HASŁA---");
+        while (true)
+        {
+            System.out.print("Podaj aktualne hasło: ");
+            currentPassword = scanner.nextLine();
+            if (checkIfPasswordIsCorrect(currentPassword, user.get().getPassword()))
+            {
+                System.out.println("Podane hasło jest poprawne");
+                System.out.print("Podaj nowe hasło: ");
+                while (true)
+                {
+                    newPassword = scanner.nextLine();
+                    if (passwordIsCorrect(newPassword))
+                    {
+                        break;
+                    }
+                    System.err.println("Podane hasło jest zbyt proste.\nHasło musi zawierać od 8 do 20 znaków, 1 wielką literę, 1 małą literę, 1 cyfrę, 1 znak specjalny.");
+                    System.err.flush();
+                    System.out.print("Ponownie podaj nowe hasło: ");
+                }
+                user.get().setPassword(hash(newPassword));
+                break;
+            }
+            System.err.println("Niepoprawne hasło!!!\nSpróbuj ponownie");
+        }
+
+    }
+
     public void changeAddress(UserId userId)
     {
         Optional<User> user = getUserById(userId);
@@ -297,9 +330,60 @@ public class UserService extends AbstractService
         }
     }
 
-    public void updateIdentityDocument(UserId userId)
+    public void updateIdentityDocument(UserId userId, String titleLabel, String descriptionLabel)
     {
         Optional<User> user = getUserById(userId);
+        System.out.println(titleLabel);
+        System.out.print(descriptionLabel);
+
+        LocalDate releaseDate;
+        while (true)
+        {
+            releaseDate = createDate("---WPROWADŹ DATĘ WYDANIA---");
+            if (releaseDate.plusYears(10).isAfter(LocalDate.now()))
+            {
+                if (!releaseDate.isAfter(LocalDate.now()))
+                {
+                    user.get().getIdentityDocument().setReleaseDate(releaseDate);
+                    break;
+                }
+                else
+                {
+                    System.err.println("Podana data wydania dowodu jest błędna.\nData wydania dowodu nie może być datą z przyszłości.");
+                    System.err.flush();
+                    System.out.println("Ponownie podaj datę wydania dowodu.");
+                }
+            }
+            else
+            {
+                System.err.println("Podana data wydania dowodu jest błędna.\nDowód osobisty wydany w tym dniu jest już nie ważny.");
+                System.err.flush();
+                System.out.println("Ponownie podaj datę wydania dowodu.");
+            }
+        }
+        LocalDate expiryDate = releaseDate.plusYears(10);
+        user.get().getIdentityDocument().setExpiryDate(expiryDate);
+
+        String seriesAndNumber;
+        System.out.print("Podaj serię i numer dowodu: ");
+        while (true)
+        {
+            scanner = new Scanner(System.in);
+            seriesAndNumber = scanner.nextLine();
+            seriesAndNumber = convertAllLettersToUppercase(seriesAndNumber);
+            if (seriesAndNumberIsCorrect(seriesAndNumber))
+            {
+                user.get().getIdentityDocument().setSeriesAndNumber(seriesAndNumber);
+                break;
+            }
+            else
+            {
+                System.err.println("Podany numer i seria dowodu jest błędna.\nNumer i seria dowodu powinna się składać tylko z 9 znaków (3 litery, 6 cyfr).");
+                System.err.flush();
+                System.out.print("Ponownie podaj numer i serię dowodu: ");
+            }
+        }
+        System.out.println("Dowód osobisty został zaktualizowany");
     }
 
     public void autoUpdateIdentityDocument(UserId userId)
@@ -307,48 +391,7 @@ public class UserService extends AbstractService
         Optional<User> user = getUserById(userId);
         if (user.get().getIdentityDocument().getExpiryDate().isBefore(LocalDate.now()))
         {
-            System.out.println("\n---AUTOMATYCZNA AKTUALIZACJA DOWÓDU OSOBISTEGO---");
-            System.out.println("Twój dowód osobisty wygasł, wprowadź nowy, aby kontynuować.");
-
-            LocalDate releaseDate;
-            while (true)
-            {
-                releaseDate = createDate("---WPROWADŹ DATĘ WYDANIA---");
-                if (releaseDate.plusYears(10).isAfter(LocalDate.now()))
-                {
-                    user.get().getIdentityDocument().setReleaseDate(releaseDate);
-                    break;
-                }
-                else
-                {
-                    System.err.println("Podana data wydania dowodu jest błędna.\nDowód osobisty wydany w tym dniu jest już nie ważny.");
-                    System.err.flush();
-                    System.out.println("Ponownie podaj datę wydania dowodu.");
-                }
-            }
-            LocalDate expiryDate = releaseDate.plusYears(10);
-            user.get().getIdentityDocument().setExpiryDate(expiryDate);
-
-            String seriesAndNumber;
-            System.out.print("Podaj serię i numer dowodu: ");
-            while (true)
-            {
-                scanner = new Scanner(System.in);
-                seriesAndNumber = scanner.nextLine();
-                seriesAndNumber = convertAllLettersToUppercase(seriesAndNumber);
-                if (seriesAndNumberIsCorrect(seriesAndNumber))
-                {
-                    user.get().getIdentityDocument().setSeriesAndNumber(seriesAndNumber);
-                    break;
-                }
-                else
-                {
-                    System.err.println("Podany numer i seria dowodu jest błędna.\nNumer i seria dowodu powinna się składać tylko z 9 znaków (3 litery, 6 cyfr).");
-                    System.err.flush();
-                    System.out.print("Ponownie podaj numer i serię dowodu: ");
-                }
-            }
-            System.out.println("Dowód osobisty został zaktualizowany");
+            updateIdentityDocument(userId, "\n---AUTOMATYCZNA AKTUALIZACJA DOWÓDU OSOBISTEGO---", "Twój dowód osobisty wygasł, wprowadź nowy, aby kontynuować.\n");
         }
     }
 
@@ -526,8 +569,17 @@ public class UserService extends AbstractService
             releaseDate = createDate("---WPROWADŹ DATĘ WYDANIA---");
             if (releaseDate.plusYears(10).isAfter(LocalDate.now()))
             {
-                identityDocument.setReleaseDate(releaseDate);
-                break;
+                if (!releaseDate.isAfter(LocalDate.now()))
+                {
+                    identityDocument.setReleaseDate(releaseDate);
+                    break;
+                }
+                else
+                {
+                    System.err.println("Podana data wydania dowodu jest błędna.\nData wydania dowodu nie może być datą z przyszłości.");
+                    System.err.flush();
+                    System.out.println("Ponownie podaj datę wydania dowodu.");
+                }
             }
             else
             {
