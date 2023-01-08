@@ -1,5 +1,6 @@
 package com.ciosmak.bankapp.menu;
 
+import com.ciosmak.bankapp.service.BankAccountService;
 import com.ciosmak.bankapp.service.UserService;
 import com.ciosmak.bankapp.user.id.UserId;
 
@@ -8,7 +9,7 @@ import java.util.Scanner;
 
 public class Menu
 {
-    public static void loginMenu(UserService userService, UserId userId)
+    public static void loginMenu(UserService userService, UserId userId, BankAccountService bankAccountService)
     {
         while (true)
         {
@@ -33,7 +34,7 @@ public class Menu
                     case 2 ->
                     {
                         userService.register(userId);
-                        //TODO utworznie konta bankowego i kartypłatniczej
+                        bankAccountService.createBankAccount(userId);
                         return;
                     }
                     case 3 -> System.exit(0);
