@@ -93,7 +93,6 @@ public class UserService extends AbstractService
                     System.err.println("Nie ma takiej opcji.\nNależy wprowadzić znak 'T' lub znak 'N'.\nSpróbuj ponownie.");
                     System.err.flush();
                 }
-
             }
             catch (Exception e)
             {
@@ -148,6 +147,76 @@ public class UserService extends AbstractService
             }
 
         }
+    }
+
+    public void changeAddress(UserId userId)
+    {
+        Optional<User> user = userRepository.findById(userId.getId());
+        if (user.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+
+        Address address = createAddress("---ZMIANA ADRESU---", false);
+        user.get().getAddresses().get(0).setStreet(address.getStreet());
+        user.get().getAddresses().get(0).setHouseNumber(address.getHouseNumber());
+        user.get().getAddresses().get(0).setApartmentNumber(address.getApartmentNumber());
+        user.get().getAddresses().get(0).setPostCode(address.getPostCode());
+        user.get().getAddresses().get(0).setTown(address.getTown());
+        user.get().getAddresses().get(0).setCountry(address.getCountry());
+        System.out.println("ADRES ZOSTAŁ ZMIENIONY POMYŚLNIE");
+    }
+
+    public void changeMailingAddress(UserId userId)
+    {
+        Optional<User> user = userRepository.findById(userId.getId());
+        if (user.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+
+        if (user.get().getAddresses().size() < 2)
+        {
+            char addMailingAddress;
+            while (true)
+            {
+                System.out.println("Adres korespodencyjny jest taki sam jak adres główny.");
+                System.out.println("Chcesz ustawić inny adres do korespondencji (T/N): ");
+                addMailingAddress = scanner.nextLine().charAt(0);
+                if (trueOrFalseAnswerIsCorrect(addMailingAddress))
+                {
+                    if (Character.toUpperCase(addMailingAddress) == 'T')
+                    {
+                        Address address = createAddress("---DODAWANIE ADRESU KORESPONDENCYJNEGO---", true);
+                        user.get().getAddresses().add(address);
+                    }
+                    else
+                    {
+                        System.out.println("Żadne zmiany nie zostały wprowadzone");
+                    }
+                    return;
+                }
+                else
+                {
+                    System.err.println("Nie ma takiej opcji.\nNależy wprowadzić znak 'T' lub znak 'N'.\nSpróbuj ponownie.");
+                    System.err.flush();
+                }
+            }
+        }
+        Address address = createAddress("---ZMIANA ADRESU KORESPONDENCYJNEGO---", true);
+        user.get().getAddresses().get(1).setStreet(address.getStreet());
+        user.get().getAddresses().get(1).setHouseNumber(address.getHouseNumber());
+        user.get().getAddresses().get(1).setApartmentNumber(address.getApartmentNumber());
+        user.get().getAddresses().get(1).setPostCode(address.getPostCode());
+        user.get().getAddresses().get(1).setTown(address.getTown());
+        user.get().getAddresses().get(1).setCountry(address.getCountry());
+        System.out.println("ADRES KORESPONDENCYJNY ZOSTAŁ ZMIENIONY POMYŚLNIE");
     }
 
     private PersonalData createPersonalData()
