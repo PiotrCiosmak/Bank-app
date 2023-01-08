@@ -33,6 +33,7 @@ public class Menu
                     case 2 ->
                     {
                         userService.register(userId);
+                        //TODO utworznie konta bankowego i kartypłatniczej
                         return;
                     }
                     case 3 -> System.exit(0);
@@ -128,11 +129,12 @@ public class Menu
             try
             {
                 System.out.println("\n---USTAWIENIA---");
-                System.out.println("1. Zmień adres");
-                System.out.println("2. Zmień adres korespondencyjny");
-                System.out.println("3. Aktualizuj dane osobowe");
-                System.out.println("4. Aktualizuj dowód osobisty");
-                System.out.println("5. Wstecz");
+                System.out.println("1. Zmień hasło");
+                System.out.println("2. Zmień adres");
+                System.out.println("3. Zmień adres korespondencyjny");
+                System.out.println("4. Aktualizuj dane osobowe");
+                System.out.println("5. Aktualizuj dowód osobisty");
+                System.out.println("6. Wstecz");
                 System.out.print("Wybieram: ");
                 selectedOption = scanner.nextInt();
 
@@ -140,25 +142,30 @@ public class Menu
                 {
                     case 1 ->
                     {
-                        userService.changeAddress(userId);
+                        userService.changePassword(userId);
                         return;
                     }
                     case 2 ->
                     {
-                        userService.changeMailingAddress(userId);
+                        userService.changeAddress(userId);
                         return;
                     }
                     case 3 ->
                     {
-                        userService.updatePersonalData(userId);
+                        userService.changeMailingAddress(userId);
                         return;
                     }
                     case 4 ->
                     {
-                        userService.updateIdentityDocument(userId);
+                        userService.updatePersonalData(userId);
                         return;
                     }
-                    case 5 -> mainMenu(userService, userId);
+                    case 5 ->
+                    {
+                        userService.updateIdentityDocument(userId, "\n---AKTUALIZACJA DOWÓDU OSOBISTEGO---", "");
+                        return;
+                    }
+                    case 6 -> mainMenu(userService, userId);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -169,7 +176,7 @@ public class Menu
             catch (InputMismatchException e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 5.\nSpróbuj ponownie.");
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 6.\nSpróbuj ponownie.");
                 System.err.flush();
             }
             catch (Exception e)
