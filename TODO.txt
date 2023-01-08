@@ -2,7 +2,6 @@ Zrobić konfigurację bazy - DONE
 Zrobić schemat bazy danych - DONE
 Zrobić baze danych - DONE
 logowanie/rejestracja - DONE
-funkcja checkIfPasswordIsCorrect - ZROBIĆ
 Przerobić kod z C++ na kod Javy
 Dokończyć brakujące funkcjonalności w kodzie
 Połączyć bazę danych z kodem
