@@ -148,7 +148,7 @@ public class UserService extends AbstractService
 
     public void changePassword(UserId userId)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
         String currentPassword, newPassword;
 
         System.out.println("\n---ZMIANA HASŁA---");
@@ -181,7 +181,7 @@ public class UserService extends AbstractService
 
     public void changeAddress(UserId userId)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
 
         Address address = createAddress("\n---ZMIANA ADRESU---", false);
         user.get().getAddresses().get(0).setStreet(address.getStreet());
@@ -195,7 +195,7 @@ public class UserService extends AbstractService
 
     public void changeMailingAddress(UserId userId)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
 
         if (user.get().getAddresses().size() < 2)
         {
@@ -237,7 +237,7 @@ public class UserService extends AbstractService
 
     public void updatePersonalData(UserId userId)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
 
         while (true)
         {
@@ -328,7 +328,7 @@ public class UserService extends AbstractService
 
     public void updateIdentityDocument(UserId userId, String titleLabel, String descriptionLabel)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
         System.out.println(titleLabel);
         System.out.print(descriptionLabel);
 
@@ -384,7 +384,7 @@ public class UserService extends AbstractService
 
     public void autoUpdateIdentityDocument(UserId userId)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
         if (user.get().getIdentityDocument().getExpiryDate().isBefore(LocalDate.now()))
         {
             updateIdentityDocument(userId, "\n---AUTOMATYCZNA AKTUALIZACJA DOWÓDU OSOBISTEGO---", "Twój dowód osobisty wygasł, wprowadź nowy, aby kontynuować.\n");
@@ -799,20 +799,6 @@ public class UserService extends AbstractService
             return true;
         }
         return false;
-    }
-
-    private Optional<User> getUserById(UserId userId)
-    {
-        Optional<User> user = userRepository.findById(userId.getId());
-        if (user.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
-        return user;
     }
 
     private final UserRepository userRepository;

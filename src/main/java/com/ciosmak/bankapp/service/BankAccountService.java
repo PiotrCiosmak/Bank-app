@@ -44,7 +44,7 @@ public class BankAccountService extends AbstractService
 
         PaymentCard paymentCard = createPaymentCard(userId);
 
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
 
         BankAccount bankAccount = BankAccount.builder().
                 balance(BigDecimal.valueOf(0.0)).
@@ -84,7 +84,7 @@ public class BankAccountService extends AbstractService
 
     private PaymentCard createPaymentCard(UserId userId)
     {
-        Optional<User> user = getUserById(userId);
+        Optional<User> user = getUserById(userId, userRepository);
 
         PaymentCard paymentCard = new PaymentCard();
         System.out.println("---TWORZENIE KARTY PŁATNICZEJ---");
@@ -322,20 +322,6 @@ public class BankAccountService extends AbstractService
                 System.err.flush();
             }
         }
-    }
-
-    private Optional<User> getUserById(UserId userId)
-    {
-        Optional<User> user = userRepository.findById(userId.getId());
-        if (user.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
-        return user;
     }
 
     private final UserRepository userRepository;

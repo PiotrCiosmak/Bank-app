@@ -52,5 +52,19 @@ public class AbstractService
         return bcrypt.matches(plain, hashed);
     }
 
+    protected Optional<User> getUserById(UserId userId, UserRepository userRepository)
+    {
+        Optional<User> user = userRepository.findById(userId.getId());
+        if (user.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+        return user;
+    }
+
     protected Scanner scanner = new Scanner(System.in);
 }
