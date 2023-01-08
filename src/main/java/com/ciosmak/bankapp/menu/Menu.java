@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Menu
 {
-    public static void mainLoginMenu(UserService userService, UserId userId)
+    public static void loginMenu(UserService userService, UserId userId)
     {
         while (true)
         {
