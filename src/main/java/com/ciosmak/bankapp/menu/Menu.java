@@ -15,6 +15,7 @@ public class Menu
             int selectedOption;
             try
             {
+                System.out.println("\n---MENU LOGOWANIA---");
                 System.out.println("1. Logowanie");
                 System.out.println("2. Rejestracja");
                 System.out.println("3. Wyjście");
@@ -64,6 +65,7 @@ public class Menu
             int selectedOption;
             try
             {
+                System.out.println("\n---MENU GŁÓWNE---");
                 System.out.println("1. Pulpit");
                 System.out.println("2. Menu płatności");
                 System.out.println("3. Produkty");
@@ -119,12 +121,12 @@ public class Menu
 
     public static void setting(UserService userService, UserId userId)
     {
-        System.out.println("---USTAWIENIA---");
         while (true)
         {
             int selectedOption;
             try
             {
+                System.out.println("\n---USTAWIENIA---");
                 System.out.println("1. Zmień adres");
                 System.out.println("2. Zmień adres korespondencyjny");
                 System.out.println("3. Aktualizuj dane osobowe");
@@ -145,8 +147,16 @@ public class Menu
                         userService.changeMailingAddress(userId);
                         return;
                     }
-                    //case 3 -> userService.updatePersonalData(userId);
-                    //case 4 -> userService.updateIdentityDocument(userId);
+                    case 3 ->
+                    {
+                        userService.updatePersonalData(userId);
+                        return;
+                    }
+                    case 4 ->
+                    {
+                        userService.updateIdentityDocument(userId);
+                        return;
+                    }
                     case 5 -> mainMenu(userService, userId);
                     default ->
                     {
