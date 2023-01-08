@@ -14,33 +14,6 @@ Napisac plik redme.md
 
 
 REGEX TABEL W BAZIE DANYCH:
-users:
-email - unique, regex
-password - bcrypt, regex
-
-addresses:
-street - capitalize every first letter
-house_number - capitalize all letters
-apartment_number - capitalize all letters, nullable
-post_code - 12345 -> 12-345
-town - capitalize every first letter
-country - capitalize every first letter
-
-identity_documents:
-release_date - YYYY-MM-DD
-expiry_date - YYYY-MM-DD
-series_and_number - ABC123456
-
-personal_data:
-first_name - capitalize every first letter
-last_name - capitalize every first letter
-phone_number - 123456789 -> +48123456789
-family_name - capitalize every first letter
-personal_identity_number - unique, 1234567891
-birth_place - capitalize every first letter
-nationality - capitalize every first letter
-mothers_name - capitalize every first letter
-mothers_maiden_name - capitalize every first letter
 
 bank_accounts:
 balance - max 2 digits after comma
