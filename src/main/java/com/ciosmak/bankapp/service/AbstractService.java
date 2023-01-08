@@ -35,18 +35,9 @@ public class AbstractService
         return line.toUpperCase().trim();
     }
 
-    protected Optional<User> getUserById(UserId userId)
+    protected boolean trueOrFalseAnswerIsCorrect(Character answer)
     {
-        Optional<User> user = userRepository.findById(userId.getId());
-        if (user.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
-        return user;
+        return Character.toUpperCase(answer) == 'T' || Character.toUpperCase(answer) == 'N';
     }
 
     protected String hash(String password)
@@ -62,5 +53,4 @@ public class AbstractService
     }
 
     protected Scanner scanner = new Scanner(System.in);
-    protected UserRepository userRepository;
 }
