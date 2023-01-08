@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class UserService extends AbstractService
 {
     public void register(UserId userId)
     {
-        System.out.println("---REJESTRACJA---");
+        System.out.println("\n---REJESTRACJA---");
 
         String email;
         System.out.print("Podaj email: ");
@@ -117,7 +118,7 @@ public class UserService extends AbstractService
 
     public void signIn(UserId userId)
     {
-        System.out.println("---LOGOWANIE---");
+        System.out.println("\n---LOGOWANIE---");
 
         String email, password;
         Optional<User> user;
@@ -151,16 +152,9 @@ public class UserService extends AbstractService
 
     public void changeAddress(UserId userId)
     {
-        Optional<User> user = userRepository.findById(userId.getId());
-        if (user.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
+        Optional<User> user = getUserById(userId);
 
-        Address address = createAddress("---ZMIANA ADRESU---", false);
+        Address address = createAddress("\n---ZMIANA ADRESU---", false);
         user.get().getAddresses().get(0).setStreet(address.getStreet());
         user.get().getAddresses().get(0).setHouseNumber(address.getHouseNumber());
         user.get().getAddresses().get(0).setApartmentNumber(address.getApartmentNumber());
@@ -172,14 +166,7 @@ public class UserService extends AbstractService
 
     public void changeMailingAddress(UserId userId)
     {
-        Optional<User> user = userRepository.findById(userId.getId());
-        if (user.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
+        Optional<User> user = getUserById(userId);
 
         if (user.get().getAddresses().size() < 2)
         {
@@ -193,7 +180,7 @@ public class UserService extends AbstractService
                 {
                     if (Character.toUpperCase(addMailingAddress) == 'T')
                     {
-                        Address address = createAddress("---DODAWANIE ADRESU KORESPONDENCYJNEGO---", true);
+                        Address address = createAddress("\n---DODAWANIE ADRESU KORESPONDENCYJNEGO---", true);
                         user.get().getAddresses().add(address);
                     }
                     else
@@ -217,6 +204,116 @@ public class UserService extends AbstractService
         user.get().getAddresses().get(1).setTown(address.getTown());
         user.get().getAddresses().get(1).setCountry(address.getCountry());
         System.out.println("ADRES KORESPONDENCYJNY ZOSTAŁ ZMIENIONY POMYŚLNIE");
+    }
+
+    public void updatePersonalData(UserId userId)
+    {
+        Optional<User> user = getUserById(userId);
+
+        while (true)
+        {
+            int selectedOption;
+            try
+            {
+                System.out.println("\n---AKTUALIZOWANIE DANYCH OSOBOWYCH---");
+                System.out.println("1. Zmień number telefonu");
+                System.out.println("2. Zmień imię");
+                System.out.println("3. Zmień nazwisko");
+                System.out.println("4. Wstecz");
+                System.out.print("Wybieram: ");
+                selectedOption = scanner.nextInt();
+                scanner = new Scanner(System.in);
+
+                switch (selectedOption)
+                {
+                    case 1 ->
+                    {
+                        System.out.println("\n---ZMIANA NUMBERU TELEFONU---");
+                        String phoneNumber;
+                        System.out.print("Podaj numer telefonu: ");
+                        while (true)
+                        {
+                            scanner = new Scanner(System.in);
+                            phoneNumber = scanner.nextLine();
+                            phoneNumber = preparePhoneNumber(phoneNumber);
+                            if (phoneNumberIsCorrect(phoneNumber))
+                            {
+                                user.get().getPersonalData().setPhoneNumber(phoneNumber);
+                                System.out.println("Numer telefonu został zaktualizowany.");
+                                break;
+                            }
+                            else
+                            {
+                                System.err.println("Podany numer telefonu jest błędny.\nNumer telefonu powinien się składać tylko z 9 cyfr.");
+                                System.err.flush();
+                                System.out.print("Ponownie podaj numer telefonu: ");
+                            }
+                        }
+                    }
+                    case 2 ->
+                    {
+                        System.out.println("\n---ZMIANA IMIENIA---");
+                        String firstName;
+                        System.out.print("Podaj imie: ");
+                        firstName = scanner.nextLine();
+                        firstName = capitalizeFirstLetterOfEveryWord(firstName);
+                        user.get().getPersonalData().setFirstName(firstName);
+                        System.out.println("Imie został zaktualizowane.");
+                    }
+                    case 3 ->
+                    {
+                        System.out.println("\n---ZMIANA NAZWISKA---");
+                        String lastName;
+                        System.out.print("Podaj nazwisko: ");
+                        lastName = scanner.nextLine();
+                        lastName = capitalizeFirstLetterOfEveryWord(lastName);
+                        user.get().getPersonalData().setLastName(lastName);
+                        System.out.println("Nazwisko został zaktualizowane.");
+                    }
+                    case 4 ->
+                    {
+                        return;
+                    }
+                    default ->
+                    {
+                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
+                        System.err.flush();
+                    }
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 4.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
+    }
+
+    public void updateIdentityDocument(UserId userId)
+    {
+        Optional<User> user = getUserById(userId);
+
+    }
+
+    private Optional<User> getUserById(UserId userId)
+    {
+        Optional<User> user = userRepository.findById(userId.getId());
+        if (user.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+        return user;
     }
 
     private PersonalData createPersonalData()
