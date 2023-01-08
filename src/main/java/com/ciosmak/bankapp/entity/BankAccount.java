@@ -19,7 +19,7 @@ import java.util.List;
 public class BankAccount extends AbstractEntity
 {
     @Column(name = "balance", scale = 2, nullable = false)
-    BigDecimal balance;
+    private BigDecimal balance;
 
     @ToString.Include
     @Column(name = "bank_account_number", length = 26, nullable = false, unique = true)
