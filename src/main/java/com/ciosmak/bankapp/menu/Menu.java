@@ -27,6 +27,7 @@ public class Menu
                     case 1 ->
                     {
                         userService.signIn(userId);
+                        userService.autoUpdateIdentityDocument(userId);
                         return;
                     }
                     case 2 ->
