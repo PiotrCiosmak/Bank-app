@@ -1,11 +1,7 @@
-Zrobić konfigurację bazy - DONE
-Zrobić schemat bazy danych - DONE
-Zrobić baze danych - DONE
-logowanie/rejestracja - DONE
-Przerobić kod z C++ na kod Javy
-Dokończyć brakujące funkcjonalności w kodzie
-Połączyć bazę danych z kodem
+napisac kod
 Zaimplementować wzorce projektowe
+
+
 
 Dla każdej funkcji, klasy itd. napisac dokumentację
 Zrobić testy jednostkowe
@@ -30,8 +26,6 @@ execution_date - YYYY-MM-DD HH-MM-SS
 posting_date - YYYY-MM-DD-HH-MM-SS
 
 payment_cards:
-first_name - capitalize every first letter
-last_name - capitalize every first letter
 expiry_date - YYYY-MM-DD (current + 5 years)
 status (not_activated = 0, activated = 1, blocked_temporarily = 2, blocked_permanently = 3) design pattern state, default not_activated
 pin - 1234, bcrypt
