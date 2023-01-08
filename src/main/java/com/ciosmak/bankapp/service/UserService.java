@@ -5,7 +5,6 @@ import com.ciosmak.bankapp.entity.IdentityDocument;
 import com.ciosmak.bankapp.entity.PersonalData;
 import com.ciosmak.bankapp.entity.User;
 import com.ciosmak.bankapp.repository.PersonalDataRepository;
-import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @RequiredArgsConstructor
-
 @Transactional
 @Service
 public class UserService extends AbstractService
@@ -68,8 +66,7 @@ public class UserService extends AbstractService
             System.out.print("Ponownie podaj hasło: ");
         }
 
-        PersonalData personalDataTmp = new PersonalData();
-        personalDataTmp = createPersonalData();
+        PersonalData personalData = createPersonalData();
 
         ArrayList<Address> addresses = new ArrayList<>();
         addresses.add(createAddress("---WPROWADŹ ADRES---", false));
@@ -103,15 +100,15 @@ public class UserService extends AbstractService
             }
         }
 
-        IdentityDocument identityDocumentTmp = createIdentityDocument();
+        IdentityDocument identityDocument = createIdentityDocument();
 
         User user = User.builder().
                 email(email).
                 password(hash(password)).
-                personalData(PersonalData.builder().firstName(personalDataTmp.getFirstName()).lastName(personalDataTmp.getLastName()).phoneNumber(personalDataTmp.getPhoneNumber()).familyName(personalDataTmp.getFamilyName()).personalIdentityNumber(personalDataTmp.getPersonalIdentityNumber()).birthPlace(personalDataTmp.getBirthPlace()).nationality(personalDataTmp.getNationality()).mothersName(personalDataTmp.getMothersName()).mothersMaidenName(personalDataTmp.getMothersMaidenName()).build()).
+                personalData(PersonalData.builder().firstName(personalData.getFirstName()).lastName(personalData.getLastName()).phoneNumber(personalData.getPhoneNumber()).familyName(personalData.getFamilyName()).personalIdentityNumber(personalData.getPersonalIdentityNumber()).birthPlace(personalData.getBirthPlace()).nationality(personalData.getNationality()).mothersName(personalData.getMothersName()).mothersMaidenName(personalData.getMothersMaidenName()).build()).
                 addresses(addresses).
-                identityDocument(IdentityDocument.builder().releaseDate(identityDocumentTmp.getReleaseDate()).expiryDate(identityDocumentTmp.getExpiryDate()).seriesAndNumber(identityDocumentTmp.getSeriesAndNumber()).build())
-                .build();
+                identityDocument(IdentityDocument.builder().releaseDate(identityDocument.getReleaseDate()).expiryDate(identityDocument.getExpiryDate()).seriesAndNumber(identityDocument.getSeriesAndNumber()).build()).
+                build();
         userRepository.save(user);
         userId.setId(user.getId());
     }
@@ -138,7 +135,7 @@ public class UserService extends AbstractService
             }
             else
             {
-                if (checkIfPasswordIsCorrect(password, user.get().getPassword()))
+                if (checkIfHashedIsCorrect(password, user.get().getPassword()))
                 {
                     System.out.println("Zalogowano");
                     userId.setId(user.get().getId());
@@ -160,7 +157,7 @@ public class UserService extends AbstractService
         {
             System.out.print("Podaj aktualne hasło: ");
             currentPassword = scanner.nextLine();
-            if (checkIfPasswordIsCorrect(currentPassword, user.get().getPassword()))
+            if (checkIfHashedIsCorrect(currentPassword, user.get().getPassword()))
             {
                 System.out.println("Podane hasło jest poprawne");
                 System.out.print("Podaj nowe hasło: ");
@@ -395,24 +392,11 @@ public class UserService extends AbstractService
         }
     }
 
-    private Optional<User> getUserById(UserId userId)
-    {
-        Optional<User> user = userRepository.findById(userId.getId());
-        if (user.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
-        return user;
-    }
-
     private PersonalData createPersonalData()
     {
         PersonalData personalData = new PersonalData();
-        System.out.println("---WPROWADŹ DANE OSBOWE---");
+        System.out.println("---WPROWADŹ DANE OSOBOWE---");
+
         String firstName;
         System.out.print("Podaj imie: ");
         firstName = scanner.nextLine();
@@ -823,19 +807,5 @@ public class UserService extends AbstractService
         return false;
     }
 
-    private String hash(String password)
-    {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12, new SecureRandom());
-        return bCryptPasswordEncoder.encode(password);
-    }
-
-    private boolean checkIfPasswordIsCorrect(String password, String hashedPassword)
-    {
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        return bcrypt.matches(password, hashedPassword);
-    }
-
-    private final UserRepository userRepository;
     private final PersonalDataRepository personalDataRepository;
-
 }
