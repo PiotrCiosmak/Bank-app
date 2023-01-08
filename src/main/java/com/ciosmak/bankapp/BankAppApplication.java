@@ -1,6 +1,7 @@
 package com.ciosmak.bankapp;
 
 import com.ciosmak.bankapp.menu.Menu;
+import com.ciosmak.bankapp.service.BankAccountService;
 import com.ciosmak.bankapp.service.UserService;
 import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,12 @@ public class BankAppApplication implements CommandLineRunner
     @Override
     public void run(String[] args)
     {
+
         UserId userId = UserId.getInstance(0L);
-        Menu.loginMenu(userService, userId);
+        Menu.loginMenu(userService, userId, bankAccountService);
         Menu.mainMenu(userService, userId);
     }
 
     private final UserService userService;
+    private final BankAccountService bankAccountService;
 }
