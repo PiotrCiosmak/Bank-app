@@ -5,14 +5,13 @@ import com.ciosmak.bankapp.entity.IdentityDocument;
 import com.ciosmak.bankapp.entity.PersonalData;
 import com.ciosmak.bankapp.entity.User;
 import com.ciosmak.bankapp.repository.PersonalDataRepository;
+import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -36,7 +35,7 @@ public class UserService extends AbstractService
         {
             email = scanner.nextLine();
             email = convertAllLettersToLowercase(email);
-            if (emailIsCorrect(email)) //weenatrz czy email jest unique
+            if (emailIsCorrect(email))
             {
                 if (emailIsUnique(email))
                 {
@@ -725,11 +724,6 @@ public class UserService extends AbstractService
         return false;
     }
 
-    private boolean trueOrFalseAnswerIsCorrect(Character answer)
-    {
-        return Character.toUpperCase(answer) == 'T' || Character.toUpperCase(answer) == 'N';
-    }
-
     private boolean dateIsCorrect(Integer day, Integer month, Integer year)
     {
         if (year < 1)
@@ -807,5 +801,20 @@ public class UserService extends AbstractService
         return false;
     }
 
+    private Optional<User> getUserById(UserId userId)
+    {
+        Optional<User> user = userRepository.findById(userId.getId());
+        if (user.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+        return user;
+    }
+
+    private final UserRepository userRepository;
     private final PersonalDataRepository personalDataRepository;
 }
