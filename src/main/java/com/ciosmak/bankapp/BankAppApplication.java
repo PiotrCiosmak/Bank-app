@@ -23,15 +23,10 @@ public class BankAppApplication implements CommandLineRunner
     @Override
     public void run(String[] args)
     {
-        String loginOption = Menu.mainLoginMenu();
         UserId userId = UserId.getInstance(0L);
-        switch (loginOption)
-        {
-            case "sign_in" -> userService.signIn(userId);
-            case "register" -> userService.register(userId);
-        }
+        Menu.loginMenu(userService, userId);
+        Menu.mainMenu(userService, userId);
     }
 
     private final UserService userService;
-
 }
