@@ -1,8 +1,11 @@
+po wejsciu w produktu i wyborze karty płatniczej zawsze sprawjdzaj jej status, jeśli jest nie aktywna to przejdź do jej aktywacji
+atywacja (podaj pin aby aktywowac karte, napis AKTYWACJA W TOKU odliczanie czasu aktywacji random (5-15 sekund) przejście do karty dopiero
+status design pattern state,
 napisac kod
-Zaimplementować wzorce projektowe
+może zaimplementować jeszcze jakieś wzorce projektowe
 
 
-
+POZA KODE:
 Dla każdej funkcji, klasy itd. napisac dokumentację
 Zrobić testy jednostkowe
 Zrobić diagram UML
@@ -10,15 +13,6 @@ Napisac plik redme.md
 
 
 REGEX TABEL W BAZIE DANYCH:
-
-bank_accounts:
-balance - max 2 digits after comma
-bank_account_number - unique, 26 digits
-international_bank_account_number - unique
-is_open - default true
-maintenance_fee - max 2 digits after comma
-interest - max 2 digits after comma in %, nullable
-
 transfers:
 title
 amount_of_money - max 2 digits after comma
@@ -26,22 +20,4 @@ execution_date - YYYY-MM-DD HH-MM-SS
 posting_date - YYYY-MM-DD-HH-MM-SS
 
 payment_cards:
-expiry_date - YYYY-MM-DD (current + 5 years)
-status (not_activated = 0, activated = 1, blocked_temporarily = 2, blocked_permanently = 3) design pattern state, default not_activated
-pin - 1234, bcrypt
-card_number - unique
-verification_value - bcrypt
-payment_limit_per_day - max 2 digits after comma
-withdraw_limit_per_day - max 2 digits after comma
-internet_transactions_limit_per day - max 2 digits after comma
-contactless_transactions_are_active - default false
-magnetic_strip_is_active - default false
-transactions_with_ddc_service_are_active - default false
-surcharge_transactions_are_active - default false
-withdrawal_fee_in_poland - max 2 digits after comma
-foreign_withdrawal_fee - max 2 digits after comma
-maintenance_fee - max 2 digits after comma
-minimum_number_of_transactions - >0
-debt_balance_is_active - default false
-debt_balance - max 2 digits after comma, nullable
-max_debt - max 2 digits after comma
+status design pattern state, default not_activated
