@@ -148,7 +148,7 @@ public class UserService extends AbstractService
 
     public void changePassword(UserId userId)
     {
-        Optional<User> user = getUserById(userId, userRepository);
+        User user = getUserById(userId, userRepository);
         String currentPassword, newPassword;
 
         System.out.println("\n---ZMIANA HASŁA---");
@@ -156,7 +156,7 @@ public class UserService extends AbstractService
         {
             System.out.print("Podaj aktualne hasło: ");
             currentPassword = scanner.nextLine();
-            if (checkIfHashedIsCorrect(currentPassword, user.get().getPassword()))
+            if (checkIfHashedIsCorrect(currentPassword, user.getPassword()))
             {
                 System.out.println("Podane hasło jest poprawne");
                 System.out.print("Podaj nowe hasło: ");
@@ -171,7 +171,7 @@ public class UserService extends AbstractService
                     System.err.flush();
                     System.out.print("Ponownie podaj nowe hasło: ");
                 }
-                user.get().setPassword(hash(newPassword));
+                user.setPassword(hash(newPassword));
                 break;
             }
             System.err.println("Niepoprawne hasło!!!\nSpróbuj ponownie");
@@ -181,23 +181,23 @@ public class UserService extends AbstractService
 
     public void changeAddress(UserId userId)
     {
-        Optional<User> user = getUserById(userId, userRepository);
+        User user = getUserById(userId, userRepository);
 
         Address address = createAddress("\n---ZMIANA ADRESU---", false);
-        user.get().getAddresses().get(0).setStreet(address.getStreet());
-        user.get().getAddresses().get(0).setHouseNumber(address.getHouseNumber());
-        user.get().getAddresses().get(0).setApartmentNumber(address.getApartmentNumber());
-        user.get().getAddresses().get(0).setPostCode(address.getPostCode());
-        user.get().getAddresses().get(0).setTown(address.getTown());
-        user.get().getAddresses().get(0).setCountry(address.getCountry());
+        user.getAddresses().get(0).setStreet(address.getStreet());
+        user.getAddresses().get(0).setHouseNumber(address.getHouseNumber());
+        user.getAddresses().get(0).setApartmentNumber(address.getApartmentNumber());
+        user.getAddresses().get(0).setPostCode(address.getPostCode());
+        user.getAddresses().get(0).setTown(address.getTown());
+        user.getAddresses().get(0).setCountry(address.getCountry());
         System.out.println("ADRES ZOSTAŁ ZMIENIONY POMYŚLNIE");
     }
 
     public void changeMailingAddress(UserId userId)
     {
-        Optional<User> user = getUserById(userId, userRepository);
+        User user = getUserById(userId, userRepository);
 
-        if (user.get().getAddresses().size() < 2)
+        if (user.getAddresses().size() < 2)
         {
             char addMailingAddress;
             while (true)
@@ -210,7 +210,7 @@ public class UserService extends AbstractService
                     if (Character.toUpperCase(addMailingAddress) == 'T')
                     {
                         Address address = createAddress("\n---DODAWANIE ADRESU KORESPONDENCYJNEGO---", true);
-                        user.get().getAddresses().add(address);
+                        user.getAddresses().add(address);
                     }
                     else
                     {
@@ -226,22 +226,22 @@ public class UserService extends AbstractService
             }
         }
         Address address = createAddress("---ZMIANA ADRESU KORESPONDENCYJNEGO---", true);
-        user.get().getAddresses().get(1).setStreet(address.getStreet());
-        user.get().getAddresses().get(1).setHouseNumber(address.getHouseNumber());
-        user.get().getAddresses().get(1).setApartmentNumber(address.getApartmentNumber());
-        user.get().getAddresses().get(1).setPostCode(address.getPostCode());
-        user.get().getAddresses().get(1).setTown(address.getTown());
-        user.get().getAddresses().get(1).setCountry(address.getCountry());
+        user.getAddresses().get(1).setStreet(address.getStreet());
+        user.getAddresses().get(1).setHouseNumber(address.getHouseNumber());
+        user.getAddresses().get(1).setApartmentNumber(address.getApartmentNumber());
+        user.getAddresses().get(1).setPostCode(address.getPostCode());
+        user.getAddresses().get(1).setTown(address.getTown());
+        user.getAddresses().get(1).setCountry(address.getCountry());
         System.out.println("ADRES KORESPONDENCYJNY ZOSTAŁ ZMIENIONY POMYŚLNIE");
     }
 
     public void updatePersonalData(UserId userId)
     {
-        Optional<User> user = getUserById(userId, userRepository);
+        User user = getUserById(userId, userRepository);
+        int selectedOption;
 
         while (true)
         {
-            int selectedOption;
             try
             {
                 System.out.println("\n---AKTUALIZOWANIE DANYCH OSOBOWYCH---");
@@ -267,7 +267,7 @@ public class UserService extends AbstractService
                             phoneNumber = preparePhoneNumber(phoneNumber);
                             if (phoneNumberIsCorrect(phoneNumber))
                             {
-                                user.get().getPersonalData().setPhoneNumber(phoneNumber);
+                                user.getPersonalData().setPhoneNumber(phoneNumber);
                                 System.out.println("Numer telefonu został zaktualizowany.");
                                 break;
                             }
@@ -286,7 +286,7 @@ public class UserService extends AbstractService
                         System.out.print("Podaj imie: ");
                         firstName = scanner.nextLine();
                         firstName = capitalizeFirstLetterOfEveryWord(firstName);
-                        user.get().getPersonalData().setFirstName(firstName);
+                        user.getPersonalData().setFirstName(firstName);
                         System.out.println("Imie został zaktualizowane.");
                     }
                     case 3 ->
@@ -296,7 +296,7 @@ public class UserService extends AbstractService
                         System.out.print("Podaj nazwisko: ");
                         lastName = scanner.nextLine();
                         lastName = capitalizeFirstLetterOfEveryWord(lastName);
-                        user.get().getPersonalData().setLastName(lastName);
+                        user.getPersonalData().setLastName(lastName);
                         System.out.println("Nazwisko został zaktualizowane.");
                     }
                     case 4 ->
@@ -328,7 +328,7 @@ public class UserService extends AbstractService
 
     public void updateIdentityDocument(UserId userId, String titleLabel, String descriptionLabel)
     {
-        Optional<User> user = getUserById(userId, userRepository);
+        User user = getUserById(userId, userRepository);
         System.out.println(titleLabel);
         System.out.print(descriptionLabel);
 
@@ -340,7 +340,7 @@ public class UserService extends AbstractService
             {
                 if (!releaseDate.isAfter(LocalDate.now()))
                 {
-                    user.get().getIdentityDocument().setReleaseDate(releaseDate);
+                    user.getIdentityDocument().setReleaseDate(releaseDate);
                     break;
                 }
                 else
@@ -358,7 +358,7 @@ public class UserService extends AbstractService
             }
         }
         LocalDate expiryDate = releaseDate.plusYears(10);
-        user.get().getIdentityDocument().setExpiryDate(expiryDate);
+        user.getIdentityDocument().setExpiryDate(expiryDate);
 
         String seriesAndNumber;
         System.out.print("Podaj serię i numer dowodu: ");
@@ -369,7 +369,7 @@ public class UserService extends AbstractService
             seriesAndNumber = convertAllLettersToUppercase(seriesAndNumber);
             if (seriesAndNumberIsCorrect(seriesAndNumber))
             {
-                user.get().getIdentityDocument().setSeriesAndNumber(seriesAndNumber);
+                user.getIdentityDocument().setSeriesAndNumber(seriesAndNumber);
                 break;
             }
             else
@@ -384,8 +384,8 @@ public class UserService extends AbstractService
 
     public void autoUpdateIdentityDocument(UserId userId)
     {
-        Optional<User> user = getUserById(userId, userRepository);
-        if (user.get().getIdentityDocument().getExpiryDate().isBefore(LocalDate.now()))
+        User user = getUserById(userId, userRepository);
+        if (user.getIdentityDocument().getExpiryDate().isBefore(LocalDate.now()))
         {
             updateIdentityDocument(userId, "\n---AUTOMATYCZNA AKTUALIZACJA DOWÓDU OSOBISTEGO---", "Twój dowód osobisty wygasł, wprowadź nowy, aby kontynuować.\n");
         }
