@@ -98,7 +98,7 @@ public class BankAccountService extends AbstractService
 
     public void showBankAccount(BankAccountId bankAccountId)
     {
-        BankAccount bankAccount = getBankAccountById(bankAccountId);
+        BankAccount bankAccount = getBankAccountById(bankAccountId, bankAccountRepository);
         System.out.println("\n---RACHUNEK BANKOWY---");
         System.out.println("Nazwa rachunku: " + bankAccount.getName());
         System.out.println("Dostępne środki: " + bankAccount.getBalance());
@@ -110,7 +110,7 @@ public class BankAccountService extends AbstractService
 
     public void changeBankAccountName(BankAccountId bankAccountId)
     {
-        BankAccount bankAccount = getBankAccountById(bankAccountId);
+        BankAccount bankAccount = getBankAccountById(bankAccountId, bankAccountRepository);
         System.out.println("\n---ZMIANA NAZWY RACHUNKU BANKOWEGO---");
         System.out.println("Aktualna nazwa rachunku: " + bankAccount.getName());
         String newName = createBankAccountName("Podaj nową nazwę rachunku: ");
@@ -167,20 +167,6 @@ public class BankAccountService extends AbstractService
     private BigDecimal prepareInterest()
     {
         return BigDecimal.valueOf(0.0);
-    }
-
-    protected BankAccount getBankAccountById(BankAccountId bankAccountId)
-    {
-        Optional<BankAccount> bankAccount = bankAccountRepository.findById(bankAccountId.getId());
-        if (bankAccount.isEmpty())
-        {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK RACHUNKU BANKOWEGO O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
-        }
-        return bankAccount.get();
     }
 
     private final UserRepository userRepository;
