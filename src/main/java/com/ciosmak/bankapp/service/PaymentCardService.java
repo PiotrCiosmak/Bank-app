@@ -3,6 +3,7 @@ package com.ciosmak.bankapp.service;
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.PaymentCard;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
 import com.ciosmak.bankapp.payment.card.status.NotActivated;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
 import com.ciosmak.bankapp.repository.PaymentCardRepository;
@@ -16,14 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class PaymentCardService extends AbstractService
+public class PaymentCardService extends AbstractPaymentCardService
 {
     public PaymentCard createPaymentCard(UserId userId)
     {
@@ -41,23 +40,7 @@ public class PaymentCardService extends AbstractService
         NotActivated notActivated = new NotActivated();
         paymentCard.setStatus(notActivated);
 
-        String pin;
-        System.out.print("Podaj kod pin: ");
-        while (true)
-        {
-            pin = scanner.nextLine();
-            if (pinIsCorrect(pin))
-            {
-                break;
-            }
-            else
-            {
-                System.err.println("Podany kod pin jest błędny.\nKod pin powinien się składać tylko z 4 cyfr.");
-                System.err.flush();
-                System.out.print("Ponownie podaj kodu pin: ");
-            }
-        }
-        paymentCard.setPin(hash(pin));
+        paymentCard.setPin(preparePin());
 
         String cardNumber;
         do
@@ -137,21 +120,71 @@ public class PaymentCardService extends AbstractService
         }
     }
 
-
-    private boolean pinIsCorrect(String pin)
+    public void showPaymentCard(PaymentCardId paymentCardId)
     {
-        if (pin.length() == 4)
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().showPaymentCard(paymentCardId, paymentCardRepository);
+    }
+
+    public void changeLimits(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeLimits(paymentCardId, paymentCardRepository);
+    }
+
+    public void blockTemporarily(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().blockTemporarily(paymentCardId, paymentCardRepository);
+    }
+
+    public void unlock(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().unlock(paymentCardId, paymentCardRepository);
+    }
+
+    public void blockPermanently(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().blockPermanently(paymentCardId, paymentCardRepository);
+    }
+
+    public void changePin(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changePin(paymentCardId, paymentCardRepository);
+    }
+
+    public void changeContactlessTransactionOption(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeContactlessTransactionOption(paymentCardId, paymentCardRepository);
+    }
+
+    public void changeMagneticStripOption(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeMagneticStripOption(paymentCardId, paymentCardRepository);
+    }
+
+    public void changeTransactionsWithDdcServiceOption(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeTransactionsWithDdcServiceOption(paymentCardId, paymentCardRepository);
+    }
+
+    public void changeSurchargeTransactionsOption(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeSurchargeTransactionsOption(paymentCardId, paymentCardRepository);
+    }
+
+    public void changeDebitOption(PaymentCardId paymentCardId)
+    {
+        paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeDebitOption(paymentCardId, paymentCardRepository);
+    }
+
+    public void autoCheckExpiryDate(PaymentCardId paymentCardId)
+    {
+        ArrayList<PaymentCard> paymentCardList = paymentCardRepository.findAll();
+        for (var paymentCard : paymentCardList)
         {
-            for (int i = 0; i < pin.length(); ++i)
+            if (paymentCard.getExpiryDate().isBefore(LocalDate.now()))
             {
-                if (!Character.isDigit(pin.charAt(i)))
-                {
-                    return false;
-                }
+                paymentCard.setExpiryDate(LocalDate.now().plusYears(5));
             }
-            return true;
         }
-        return false;
     }
 
     private String generateCardNumber()
@@ -180,32 +213,6 @@ public class PaymentCardService extends AbstractService
             verificationValue.append(random.nextInt(10));
         }
         return hash(verificationValue.toString().trim());
-    }
-
-    private BigDecimal setLimitPerDay(String message)
-    {
-        BigDecimal limitPerDay;
-        while (true)
-        {
-            try
-            {
-                System.out.print(message);
-                limitPerDay = scanner.nextBigDecimal();
-                Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
-                Matcher matcher = pattern.matcher(limitPerDay.toString());
-                if (!matcher.find())
-                {
-                    return limitPerDay;
-                }
-                throw new InputMismatchException();
-            }
-            catch (InputMismatchException e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Podana kwota limitu jest błędna.\nKwota limitu powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
-                System.err.flush();
-            }
-        }
     }
 
     private BigDecimal prepareWithdrawalFeeInPoland()
@@ -260,44 +267,6 @@ public class PaymentCardService extends AbstractService
     private BigDecimal prepareFirstMaxDebt()
     {
         return BigDecimal.valueOf(500.00);
-    }
-
-    private BigDecimal prepareDebtBalance(BigDecimal maxDebt)
-    {
-        BigDecimal debt;
-        while (true)
-        {
-            try
-            {
-                System.out.println("---USTAWIENIE BALANSU DEBETOWEGO---");
-                System.out.println("Maksymalny dostępna kwota: " + maxDebt.toString() + " zł");
-                System.out.print("Kwota limitu debetowego: ");
-                debt = scanner.nextBigDecimal();
-                Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
-                Matcher matcher = pattern.matcher(debt.toString());
-                if (checkIfDebtBalanceIsCorrect(debt, maxDebt))
-                {
-                    if (!matcher.find())
-                    {
-                        return debt;
-                    }
-                    throw new InputMismatchException();
-                }
-                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z zakresu od 0 do " + maxDebt.toString() + ".\nSpróbuj ponownie.");
-                System.err.flush();
-            }
-            catch (InputMismatchException e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
-                System.err.flush();
-            }
-        }
-    }
-
-    private boolean checkIfDebtBalanceIsCorrect(BigDecimal debt, BigDecimal maxDebt)
-    {
-        return debt.compareTo(BigDecimal.valueOf(0)) >= 0 && debt.compareTo(maxDebt) <= 0;
     }
 
     private final UserRepository userRepository;
