@@ -1,6 +1,12 @@
 package com.ciosmak.bankapp.service;
 
+import com.ciosmak.bankapp.bank.account.id.BankAccountId;
+import com.ciosmak.bankapp.entity.BankAccount;
+import com.ciosmak.bankapp.entity.PaymentCard;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
+import com.ciosmak.bankapp.repository.BankAccountRepository;
+import com.ciosmak.bankapp.repository.PaymentCardRepository;
 import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -66,11 +72,38 @@ public class AbstractService
         return user.get();
     }
 
+    protected BankAccount getBankAccountById(BankAccountId bankAccountId, BankAccountRepository bankAccountRepository)
+    {
+        Optional<BankAccount> bankAccount = bankAccountRepository.findById(bankAccountId.getId());
+        if (bankAccount.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("BRAK RACHUNKU BANKOWEGO O TAKIM ID W BAZIE!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+        return bankAccount.get();
+    }
+
+    public PaymentCard getPaymentCardById(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
+    {
+        Optional<PaymentCard> paymentCard = paymentCardRepository.findById(paymentCardId.getId());
+        if (paymentCard.isEmpty())
+        {
+            System.err.println("BŁĄD KRYTYCZNY!!!");
+            System.err.println("BRAK KARTY PŁATNICZEJ O TAKIM ID W BAZIE!!!");
+            System.err.println("OPUSZCZANIE PROGRAMU");
+            System.err.flush();
+            System.exit(1);
+        }
+        return paymentCard.get();
+    }
+
     protected boolean checkIfCorrectProductIsSelected(int selectedProduct, int numberOfProducts)
     {
         return selectedProduct >= 0 && selectedProduct <= numberOfProducts;
     }
-
 
     protected Scanner scanner = new Scanner(System.in);
 }
