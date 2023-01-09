@@ -24,7 +24,7 @@ public class BankAppApplication implements CommandLineRunner
     public void run(String[] args)
     {
 
-        Menu.loginMenu(userService, bankAccountService);
+        Menu.loginMenu(userService, bankAccountService, paymentCardService);
         Menu.mainMenu(userService, bankAccountService, paymentCardService);
     }
 
