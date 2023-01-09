@@ -370,16 +370,13 @@ public class UserService extends AbstractService
             if (seriesAndNumberIsCorrect(seriesAndNumber))
             {
                 user.getIdentityDocument().setSeriesAndNumber(seriesAndNumber);
+                System.out.println("Dowód osobisty został zaktualizowany");
                 break;
             }
-            else
-            {
-                System.err.println("Podany numer i seria dowodu jest błędna.\nNumer i seria dowodu powinna się składać tylko z 9 znaków (3 litery, 6 cyfr).");
-                System.err.flush();
-                System.out.print("Ponownie podaj numer i serię dowodu: ");
-            }
+            System.err.println("Podany numer i seria dowodu jest błędna.\nNumer i seria dowodu powinna się składać tylko z 9 znaków (3 litery, 6 cyfr).");
+            System.err.flush();
+            System.out.print("Ponownie podaj numer i serię dowodu: ");
         }
-        System.out.println("Dowód osobisty został zaktualizowany");
     }
 
     public void autoUpdateIdentityDocument(UserId userId)
