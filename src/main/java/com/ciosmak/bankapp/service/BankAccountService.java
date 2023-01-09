@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.service;
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.PaymentCard;
 import com.ciosmak.bankapp.entity.User;
-import com.ciosmak.bankapp.payment.card.status.Activated;
+import com.ciosmak.bankapp.payment.card.status.NotActivated;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
 import com.ciosmak.bankapp.repository.PaymentCardRepository;
 import com.ciosmak.bankapp.repository.UserRepository;
@@ -95,8 +95,8 @@ public class BankAccountService extends AbstractService
 
         paymentCard.setExpiryDate(LocalDate.now().plusYears(5));
 
-        Activated activated = new Activated();
-        paymentCard.setStatus(activated);
+        NotActivated notActivated = new NotActivated();
+        paymentCard.setStatus(notActivated);
 
         String pin;
         System.out.print("Podaj kod pin: ");
@@ -128,14 +128,6 @@ public class BankAccountService extends AbstractService
         paymentCard.setPaymentLimitPerDay(setLimitPerDay("Podaj dzienny limit płatności: "));
         paymentCard.setWithdrawLimitPerDay(setLimitPerDay("Podaj dzienny limit wypłat z bankomatów: "));
         paymentCard.setInternetTransactionLimitPerDay(setLimitPerDay("Podaj dzienny limit płatności w internecie: "));
-
-        paymentCard.setContactlessTransactionsAreActive(false);
-
-        paymentCard.setMagneticStripIsActive(false);
-
-        paymentCard.setTransactionsWithDdcServiceAreActive(false);
-
-        paymentCard.setSurchargeTransactionsAreActive(false);
 
         paymentCard.setWithdrawalFeeInPoland(prepareWithdrawalFeeInPoland());
 
@@ -309,11 +301,16 @@ public class BankAccountService extends AbstractService
                 debt = scanner.nextBigDecimal();
                 Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
                 Matcher matcher = pattern.matcher(debt.toString());
-                if (!matcher.find())
+                if (checkIfDebtBalanceIsCorrect(debt, maxDebt))
                 {
-                    return debt;
+                    if (!matcher.find())
+                    {
+                        return debt;
+                    }
+                    throw new InputMismatchException();
                 }
-                throw new InputMismatchException();
+                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z zakresu od 0 do " + maxDebt.toString() + ".\nSpróbuj ponownie.");
+                System.err.flush();
             }
             catch (InputMismatchException e)
             {
@@ -322,6 +319,11 @@ public class BankAccountService extends AbstractService
                 System.err.flush();
             }
         }
+    }
+
+    private boolean checkIfDebtBalanceIsCorrect(BigDecimal debt, BigDecimal maxDebt)
+    {
+        return debt.compareTo(BigDecimal.valueOf(0)) >= 0 && debt.compareTo(maxDebt) <= 0;
     }
 
     private final UserRepository userRepository;
