@@ -1,21 +1,21 @@
 package com.ciosmak.bankapp.payment.card.id;
 
 
-public final class PaymentAccountId
+public final class PaymentCardId
 {
-    private static PaymentAccountId instance;
+    private static PaymentCardId instance;
     public Long id;
 
-    private PaymentAccountId(Long id)
+    private PaymentCardId(Long id)
     {
         this.id = id;
     }
 
-    public static PaymentAccountId getInstance(Long id)
+    public static PaymentCardId getInstance(Long id)
     {
         if (instance == null)
         {
-            instance = new PaymentAccountId(id);
+            instance = new PaymentCardId(id);
         }
         return instance;
     }

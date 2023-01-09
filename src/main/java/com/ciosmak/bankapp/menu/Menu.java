@@ -1,7 +1,7 @@
 package com.ciosmak.bankapp.menu;
 
 import com.ciosmak.bankapp.bank.account.id.BankAccountId;
-import com.ciosmak.bankapp.payment.card.id.PaymentAccountId;
+import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
 import com.ciosmak.bankapp.service.BankAccountService;
 import com.ciosmak.bankapp.service.PaymentCardService;
 import com.ciosmak.bankapp.service.UserService;
@@ -295,7 +295,7 @@ public class Menu
 
     private static UserId userId = UserId.getInstance(0L);
     private static BankAccountId bankAccountId = BankAccountId.getInstance(0L);
-    private static PaymentAccountId paymentAccountId = PaymentAccountId.getInstance(0L);
+    private static PaymentCardId paymentCardId = PaymentCardId.getInstance(0L);
 
     private static Scanner scanner = new Scanner(System.in);
 }
