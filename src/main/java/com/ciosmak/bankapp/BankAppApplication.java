@@ -2,8 +2,8 @@ package com.ciosmak.bankapp;
 
 import com.ciosmak.bankapp.menu.Menu;
 import com.ciosmak.bankapp.service.BankAccountService;
+import com.ciosmak.bankapp.service.PaymentCardService;
 import com.ciosmak.bankapp.service.UserService;
-import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BankAppApplication implements CommandLineRunner
 {
-
     public static void main(String[] args)
     {
         SpringApplication.run(BankAppApplication.class, args);
@@ -25,11 +24,11 @@ public class BankAppApplication implements CommandLineRunner
     public void run(String[] args)
     {
 
-        UserId userId = UserId.getInstance(0L);
-        Menu.loginMenu(userService, userId, bankAccountService);
-        Menu.mainMenu(userService, userId);
+        Menu.loginMenu(userService, bankAccountService);
+        Menu.mainMenu(userService, bankAccountService, paymentCardService);
     }
 
     private final UserService userService;
     private final BankAccountService bankAccountService;
+    private final PaymentCardService paymentCardService;
 }
