@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Menu
 {
-    public static void loginMenu(UserService userService, BankAccountService bankAccountService)
+    public static void loginMenu(UserService userService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -32,6 +32,7 @@ public class Menu
                     {
                         userService.signIn(userId);
                         userService.autoUpdateIdentityDocument(userId);
+                        paymentCardService.autoCheckExpiryDate(paymentCardId);
                         return;
                     }
                     case 2 ->
@@ -145,12 +146,13 @@ public class Menu
                     case 2 ->
                     {
                         bankAccountId.setId(bankAccountService.chooseOneBankAccount(userId));
-                        bankAccountMenu(bankAccountService);
+                        bankAccountMenu(bankAccountService, userService, paymentCardService);
                         return;
                     }
                     case 3 ->
                     {
-                        paymentCardService.chooseOnePaymentCard(userId);
+                        paymentCardId.setId(paymentCardService.chooseOnePaymentCard(userId));
+                        paymentCardMenu(paymentCardService, userService, bankAccountService);
                         return;
                     }
                     case 4 -> mainMenu(userService, bankAccountService, paymentCardService);
@@ -245,7 +247,7 @@ public class Menu
         }
     }
 
-    private static void bankAccountMenu(BankAccountService bankAccountService)
+    private static void bankAccountMenu(BankAccountService bankAccountService, UserService userService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -255,21 +257,15 @@ public class Menu
                 System.out.println("\n---OPCJE RACHUNKU BANKOWEGO---");
                 System.out.println("1. Wyświetl");
                 System.out.println("2. Zmień nazwę");
+                System.out.println("3. Menu główne");
                 System.out.print("Wybieram: ");
                 selectedOption = scanner.nextInt();
 
                 switch (selectedOption)
                 {
-                    case 1 ->
-                    {
-                        bankAccountService.showBankAccount(bankAccountId);
-                        return;
-                    }
-                    case 2 ->
-                    {
-                        bankAccountService.changeBankAccountName(bankAccountId);
-                        return;
-                    }
+                    case 1 -> bankAccountService.showBankAccount(bankAccountId);
+                    case 2 -> bankAccountService.changeBankAccountName(bankAccountId);
+                    case 3 -> mainMenu(userService, bankAccountService, paymentCardService);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -280,7 +276,107 @@ public class Menu
             catch (InputMismatchException e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 2.\nSpróbuj ponownie.");
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 3.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
+    }
+
+    private static void paymentCardMenu(PaymentCardService paymentCardService, UserService userService, BankAccountService bankAccountService)
+    {
+        while (true)
+        {
+            int selectedOption;
+            try
+            {
+                System.out.println("\n---OPCJE KARTY PŁATNICZEJ---");
+                System.out.println("1. Wyświetl");
+                System.out.println("2. Zmień limity");
+                System.out.println("3. Odblokuj");
+                System.out.println("4. Zablokuj tymczasowo");
+                System.out.println("5. Zablokuj pernamentnie");
+                System.out.println("6. Więcej");
+                System.out.println("7. Menu główne");
+                System.out.print("Wybieram: ");
+                selectedOption = scanner.nextInt();
+
+                switch (selectedOption)
+                {
+                    case 1 -> paymentCardService.showPaymentCard(paymentCardId);
+                    case 2 -> paymentCardService.changeLimits(paymentCardId);
+                    case 3 -> paymentCardService.unlock(paymentCardId);
+                    case 4 -> paymentCardService.blockTemporarily(paymentCardId);
+                    case 5 -> paymentCardService.blockPermanently(paymentCardId);
+                    case 6 -> paymentCardMenuExternal(paymentCardService, userService, bankAccountService);
+                    case 7 -> mainMenu(userService, bankAccountService, paymentCardService);
+                    default ->
+                    {
+                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
+                        System.err.flush();
+                    }
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 7.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
+    }
+
+    private static void paymentCardMenuExternal(PaymentCardService paymentCardService, UserService userService, BankAccountService bankAccountService)
+    {
+        while (true)
+        {
+            int selectedOption;
+            try
+            {
+                System.out.println("\n---WIĘCEJ OPCJI KARTY PŁATNICZEJ---");
+                System.out.println("1. Zmień pin");
+                System.out.println("2. Zmień ustawienia płatności zbliżeniowych");
+                System.out.println("3. Zmień ustawienia paska magnetycznego");
+                System.out.println("4. Zmień ustawienia usługi DDC");
+                System.out.println("5. Zmień ustawienia transakcji z dopłatą");
+                System.out.println("6. Zmień ustawienia balansu debetowego");
+                System.out.println("7. Powrót");
+                System.out.print("Wybieram: ");
+                selectedOption = scanner.nextInt();
+
+                switch (selectedOption)
+                {
+                    case 1 -> paymentCardService.changePin(paymentCardId);
+                    case 2 -> paymentCardService.changeContactlessTransactionOption(paymentCardId);
+                    case 3 -> paymentCardService.changeMagneticStripOption(paymentCardId);
+                    case 4 -> paymentCardService.changeTransactionsWithDdcServiceOption(paymentCardId);
+                    case 5 -> paymentCardService.changeSurchargeTransactionsOption(paymentCardId);
+                    case 6 -> paymentCardService.changeDebitOption(paymentCardId);
+                    case 7 -> paymentCardMenu(paymentCardService, userService, bankAccountService);
+                    default ->
+                    {
+                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
+                        System.err.flush();
+                    }
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 7.\nSpróbuj ponownie.");
                 System.err.flush();
             }
             catch (Exception e)
@@ -296,6 +392,5 @@ public class Menu
     private static UserId userId = UserId.getInstance(0L);
     private static BankAccountId bankAccountId = BankAccountId.getInstance(0L);
     private static PaymentCardId paymentCardId = PaymentCardId.getInstance(0L);
-
     private static Scanner scanner = new Scanner(System.in);
 }
