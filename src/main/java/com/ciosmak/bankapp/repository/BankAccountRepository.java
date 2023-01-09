@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long>
 {
+    @Override
+    Optional<BankAccount> findById(Long bankAccountId);
+
     Optional<BankAccount> findByBankAccountNumber(String bankAccountNumber);
 
     ArrayList<BankAccount> findByUserId(Long userId);
-
-    @Override
-    Optional<BankAccount> findById(Long bankAccountId);
 }
