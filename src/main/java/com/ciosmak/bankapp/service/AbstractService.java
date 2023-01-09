@@ -52,7 +52,7 @@ public class AbstractService
         return bcrypt.matches(plain, hashed);
     }
 
-    protected Optional<User> getUserById(UserId userId, UserRepository userRepository)
+    protected User getUserById(UserId userId, UserRepository userRepository)
     {
         Optional<User> user = userRepository.findById(userId.getId());
         if (user.isEmpty())
@@ -63,8 +63,14 @@ public class AbstractService
             System.err.flush();
             System.exit(1);
         }
-        return user;
+        return user.get();
     }
+
+    protected boolean checkIfCorrectProductIsSelected(int selectedProduct, int numberOfProducts)
+    {
+        return selectedProduct >= 0 && selectedProduct <= numberOfProducts;
+    }
+
 
     protected Scanner scanner = new Scanner(System.in);
 }
