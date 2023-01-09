@@ -1,3 +1,4 @@
+UserService rodzielić na addresService i addressService
 po wejsciu w produktu i wyborze karty płatniczej zawsze sprawjdzaj jej status, jeśli jest nie aktywna to przejdź do jej aktywacji
 atywacja (podaj pin aby aktywowac karte, napis AKTYWACJA W TOKU odliczanie czasu aktywacji random (5-15 sekund) przejście do karty dopiero
 status design pattern state,
