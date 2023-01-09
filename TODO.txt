@@ -18,6 +18,3 @@ title
 amount_of_money - max 2 digits after comma
 execution_date - YYYY-MM-DD HH-MM-SS
 posting_date - YYYY-MM-DD-HH-MM-SS
-
-payment_cards:
-status design pattern state, default not_activated
