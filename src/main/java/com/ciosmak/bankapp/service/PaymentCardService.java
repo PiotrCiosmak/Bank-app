@@ -29,7 +29,7 @@ public class PaymentCardService extends AbstractPaymentCardService
         User user = getUserById(userId, userRepository);
 
         PaymentCard paymentCard = new PaymentCard();
-        System.out.println("---TWORZENIE KARTY PŁATNICZEJ---");
+        System.out.println("\n---TWORZENIE KARTY PŁATNICZEJ---");
 
         paymentCard.setFirstName(user.getPersonalData().getFirstName());
 
