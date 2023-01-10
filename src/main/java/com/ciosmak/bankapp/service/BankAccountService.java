@@ -117,6 +117,34 @@ public class BankAccountService extends AbstractService
         bankAccount.setName(newName);
     }
 
+    public BigDecimal getBalanceFromAllBankAccounts(UserId userId)
+    {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        BigDecimal balanceFromAllBankAccounts = new BigDecimal("0.0");
+        for (var bankAccount : bankAccountsList)
+        {
+            if (bankAccount.isOpen())
+            {
+                balanceFromAllBankAccounts = balanceFromAllBankAccounts.add(bankAccount.getBalance());
+            }
+        }
+        return balanceFromAllBankAccounts;
+    }
+
+    public int getNumberOfOpenBankAccounts(UserId userId)
+    {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        int numberOfActiveBankAccounts = 0;
+        for (var bankAccount : bankAccountsList)
+        {
+            if (bankAccount.isOpen())
+            {
+                numberOfActiveBankAccounts++;
+            }
+        }
+        return numberOfActiveBankAccounts;
+    }
+
     private String createBankAccountName(String message)
     {
         System.out.print(message);
