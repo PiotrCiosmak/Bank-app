@@ -1,9 +1,7 @@
 package com.ciosmak.bankapp;
 
 import com.ciosmak.bankapp.menu.Menu;
-import com.ciosmak.bankapp.service.BankAccountService;
-import com.ciosmak.bankapp.service.PaymentCardService;
-import com.ciosmak.bankapp.service.UserService;
+import com.ciosmak.bankapp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -23,12 +21,14 @@ public class BankAppApplication implements CommandLineRunner
     @Override
     public void run(String[] args)
     {
-
-        Menu.loginMenu(userService, bankAccountService, paymentCardService);
-        Menu.mainMenu(userService, bankAccountService, paymentCardService);
+        Menu.loginMenu(userService, identityDocumentService, bankAccountService, paymentCardService);
+        Menu.mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
     }
 
     private final UserService userService;
+    private final PersonalDataService personalDataService;
+    private final AddressService addressService;
+    private final IdentityDocumentService identityDocumentService;
     private final BankAccountService bankAccountService;
     private final PaymentCardService paymentCardService;
 }

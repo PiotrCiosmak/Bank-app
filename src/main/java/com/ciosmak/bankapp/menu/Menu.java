@@ -2,9 +2,7 @@ package com.ciosmak.bankapp.menu;
 
 import com.ciosmak.bankapp.bank.account.id.BankAccountId;
 import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
-import com.ciosmak.bankapp.service.BankAccountService;
-import com.ciosmak.bankapp.service.PaymentCardService;
-import com.ciosmak.bankapp.service.UserService;
+import com.ciosmak.bankapp.service.*;
 import com.ciosmak.bankapp.user.id.UserId;
 
 import java.util.InputMismatchException;
@@ -12,7 +10,7 @@ import java.util.Scanner;
 
 public class Menu
 {
-    public static void loginMenu(UserService userService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
+    public static void loginMenu(UserService userService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -31,7 +29,7 @@ public class Menu
                     case 1 ->
                     {
                         userService.signIn(userId);
-                        userService.autoUpdateIdentityDocument(userId);
+                        identityDocumentService.autoUpdateIdentityDocument(userId);
                         paymentCardService.autoCheckExpiryDate(paymentCardId);
                         return;
                     }
@@ -65,7 +63,7 @@ public class Menu
         }
     }
 
-    public static void mainMenu(UserService userService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
+    public static void mainMenu(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -85,8 +83,8 @@ public class Menu
                 {
                     case 1 -> desktop(userService);
                     case 2 -> paymentMenu(userService);
-                    case 3 -> products(userService, bankAccountService, paymentCardService);
-                    case 4 -> setting(userService, bankAccountService, paymentCardService);
+                    case 3 -> products(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
+                    case 4 -> setting(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     case 5 -> System.exit(0);
                     default ->
                     {
@@ -121,7 +119,7 @@ public class Menu
 
     }
 
-    public static void products(UserService userService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
+    public static void products(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -146,16 +144,16 @@ public class Menu
                     case 2 ->
                     {
                         bankAccountId.setId(bankAccountService.chooseOneBankAccount(userId));
-                        bankAccountMenu(bankAccountService, userService, paymentCardService);
+                        bankAccountMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                         return;
                     }
                     case 3 ->
                     {
                         paymentCardId.setId(paymentCardService.chooseOnePaymentCard(userId));
-                        paymentCardMenu(paymentCardService, userService, bankAccountService);
+                        paymentCardMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                         return;
                     }
-                    case 4 -> mainMenu(userService, bankAccountService, paymentCardService);
+                    case 4 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -179,7 +177,7 @@ public class Menu
         }
     }
 
-    public static void setting(UserService userService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
+    public static void setting(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -205,25 +203,25 @@ public class Menu
                     }
                     case 2 ->
                     {
-                        userService.changeAddress(userId);
+                        addressService.changeAddress(userId);
                         return;
                     }
                     case 3 ->
                     {
-                        userService.changeMailingAddress(userId);
+                        addressService.changeMailingAddress(userId);
                         return;
                     }
                     case 4 ->
                     {
-                        userService.updatePersonalData(userId);
+                        personalDataService.updatePersonalData(userId);
                         return;
                     }
                     case 5 ->
                     {
-                        userService.updateIdentityDocument(userId, "\n---AKTUALIZACJA DOWÓDU OSOBISTEGO---", "");
+                        identityDocumentService.updateIdentityDocument(userId, "\n---AKTUALIZACJA DOWÓDU OSOBISTEGO---", "");
                         return;
                     }
-                    case 6 -> mainMenu(userService, bankAccountService, paymentCardService);
+                    case 6 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -247,7 +245,7 @@ public class Menu
         }
     }
 
-    private static void bankAccountMenu(BankAccountService bankAccountService, UserService userService, PaymentCardService paymentCardService)
+    private static void bankAccountMenu(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -265,7 +263,7 @@ public class Menu
                 {
                     case 1 -> bankAccountService.showBankAccount(bankAccountId);
                     case 2 -> bankAccountService.changeBankAccountName(bankAccountId);
-                    case 3 -> mainMenu(userService, bankAccountService, paymentCardService);
+                    case 3 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -289,7 +287,7 @@ public class Menu
         }
     }
 
-    private static void paymentCardMenu(PaymentCardService paymentCardService, UserService userService, BankAccountService bankAccountService)
+    private static void paymentCardMenu(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -314,8 +312,8 @@ public class Menu
                     case 3 -> paymentCardService.unlock(paymentCardId);
                     case 4 -> paymentCardService.blockTemporarily(paymentCardId);
                     case 5 -> paymentCardService.blockPermanently(paymentCardId);
-                    case 6 -> paymentCardMenuExternal(paymentCardService, userService, bankAccountService);
-                    case 7 -> mainMenu(userService, bankAccountService, paymentCardService);
+                    case 6 -> paymentCardMenuExternal(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
+                    case 7 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -339,7 +337,7 @@ public class Menu
         }
     }
 
-    private static void paymentCardMenuExternal(PaymentCardService paymentCardService, UserService userService, BankAccountService bankAccountService)
+    private static void paymentCardMenuExternal(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
         while (true)
         {
@@ -365,7 +363,7 @@ public class Menu
                     case 4 -> paymentCardService.changeTransactionsWithDdcServiceOption(paymentCardId);
                     case 5 -> paymentCardService.changeSurchargeTransactionsOption(paymentCardId);
                     case 6 -> paymentCardService.changeDebitOption(paymentCardId);
-                    case 7 -> paymentCardMenu(paymentCardService, userService, bankAccountService);
+                    case 7 -> paymentCardMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     default ->
                     {
                         System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
@@ -389,8 +387,8 @@ public class Menu
         }
     }
 
-    private static UserId userId = UserId.getInstance(0L);
-    private static BankAccountId bankAccountId = BankAccountId.getInstance(0L);
-    private static PaymentCardId paymentCardId = PaymentCardId.getInstance(0L);
+    private static final UserId userId = UserId.getInstance(0L);
+    private static final BankAccountId bankAccountId = BankAccountId.getInstance(0L);
+    private static final PaymentCardId paymentCardId = PaymentCardId.getInstance(0L);
     private static Scanner scanner = new Scanner(System.in);
 }
