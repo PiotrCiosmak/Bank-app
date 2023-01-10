@@ -91,6 +91,10 @@ public class AbstractPaymentCardService extends AbstractService
                 limitPerDay = scanner.nextBigDecimal();
                 Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
                 Matcher matcher = pattern.matcher(limitPerDay.toString());
+                if (numberIsTooLong(limitPerDay))
+                {
+                    throw new Exception();
+                }
                 if (!matcher.find())
                 {
                     return limitPerDay;
@@ -103,6 +107,17 @@ public class AbstractPaymentCardService extends AbstractService
                 System.err.println("Podana kwota limitu jest błędna.\nKwota limitu powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
                 System.err.flush();
             }
+            catch (Exception e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Podana kwota limitu jest błędna.\nKwota limitu jest zbyt dużą liczbą.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
         }
+    }
+
+    private boolean numberIsTooLong(BigDecimal number)
+    {
+        return number.toString().length() > 37;
     }
 }
