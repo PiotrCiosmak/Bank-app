@@ -134,15 +134,15 @@ public class BankAccountService extends AbstractService
     public int getNumberOfOpenBankAccounts(UserId userId)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
-        int numberOfActiveBankAccounts = 0;
+        int numberOfOpenBankAccounts = 0;
         for (var bankAccount : bankAccountsList)
         {
             if (bankAccount.isOpen())
             {
-                numberOfActiveBankAccounts++;
+                numberOfOpenBankAccounts++;
             }
         }
-        return numberOfActiveBankAccounts;
+        return numberOfOpenBankAccounts;
     }
 
     private String createBankAccountName(String message)
