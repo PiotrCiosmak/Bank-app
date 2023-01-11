@@ -175,7 +175,7 @@ public class PaymentCardService extends AbstractPaymentCardService
         paymentCardRepository.getReferenceById(paymentCardId.getId()).getStatus().changeDebitOption(paymentCardId, paymentCardRepository);
     }
 
-    public void autoCheckExpiryDate(PaymentCardId paymentCardId)
+    public void autoCheckExpiryDate()
     {
         ArrayList<PaymentCard> paymentCardList = paymentCardRepository.findAll();
         for (var paymentCard : paymentCardList)
@@ -185,6 +185,20 @@ public class PaymentCardService extends AbstractPaymentCardService
                 paymentCard.setExpiryDate(LocalDate.now().plusYears(5));
             }
         }
+    }
+
+    public int getNumberOfNoPermanentlyBlockedPaymentCards(UserId userId)
+    {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        int numberOfNoPermanentlyBlockedPaymentCards = 0;
+        for (var bankAccount: bankAccountsList)
+        {
+            if(!bankAccount.getPaymentCard().getStatus().toString().equals("BLOCKED_PERMANENTLY"))
+            {
+                numberOfNoPermanentlyBlockedPaymentCards++;
+            }
+        }
+        return numberOfNoPermanentlyBlockedPaymentCards;
     }
 
     private String generateCardNumber()
