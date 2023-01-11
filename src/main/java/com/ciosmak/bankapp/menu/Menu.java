@@ -30,7 +30,7 @@ public class Menu
                     {
                         userService.signIn(userId);
                         identityDocumentService.autoUpdateIdentityDocument(userId);
-                        paymentCardService.autoCheckExpiryDate(paymentCardId);
+                        paymentCardService.autoCheckExpiryDate();
                         return;
                     }
                     case 2 ->
@@ -81,7 +81,7 @@ public class Menu
 
                 switch (selectedOption)
                 {
-                    case 1 -> desktop(userService);
+                    case 1 -> desktop(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     case 2 -> paymentMenu(userService);
                     case 3 -> products(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     case 4 -> setting(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
@@ -109,9 +109,53 @@ public class Menu
         }
     }
 
-    public static void desktop(UserService userService)
+    public static void desktop(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
-
+        System.out.println("\n---PULPIT---");
+        System.out.println("Łączny balans: " + bankAccountService.getBalanceFromAllBankAccounts(userId));
+        System.out.println("Wydatki od początku bieżącego miesiąca: ");//TODO pokazać wydatki ze wszystkich rachunków z danego miesiaca
+        System.out.println("Ilość aktywnych rachunków: " + bankAccountService.getNumberOfOpenBankAccounts(userId));
+        System.out.println("Ilość aktywnych kart płatniczych: " + paymentCardService.getNumberOfNoPermanentlyBlockedPaymentCards(userId));
+        System.out.println("---HISTORIA---");
+        //TODO pokazać 5 ostatnich transakcji
+        while (true)
+        {
+            int selectedOption;
+            try
+            {
+                System.out.println("1. Pokaż całą historię");
+                System.out.println("2. Wstecz");
+                System.out.print("Wybieram: ");
+                selectedOption = scanner.nextInt();
+                switch (selectedOption)
+                {
+                    case 1 ->
+                    {
+                        //TODO przejdź do menu historii
+                        return;
+                    }
+                    case 2 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
+                    default ->
+                    {
+                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
+                        System.err.flush();
+                    }
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 2.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
     }
 
     public static void paymentMenu(UserService userService)
