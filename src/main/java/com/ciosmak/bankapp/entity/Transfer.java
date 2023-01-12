@@ -38,6 +38,9 @@ public class Transfer extends AbstractEntity
     @Column(name = "posting_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime postingDate;
 
+    @Column(name = "done", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean done;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "transfers_bank_accounts", joinColumns = {@JoinColumn(name = "transfer_id")}, inverseJoinColumns = {@JoinColumn(name = "bank_account_id")})
     private List<BankAccount> bankAccounts = new ArrayList<>();
