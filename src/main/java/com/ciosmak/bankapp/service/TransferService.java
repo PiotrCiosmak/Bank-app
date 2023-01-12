@@ -76,7 +76,7 @@ public class TransferService extends AbstractService
         }
 
         String accountNumber;
-        System.out.print("Podaj number konta odbiorcy: ");
+        System.out.print("Podaj numer konta odbiorcy: ");
         while (true)
         {
             scanner = new Scanner(System.in);
@@ -104,6 +104,7 @@ public class TransferService extends AbstractService
                 Transfer transfer = Transfer.builder().
                         title(title).
                         amountOfMoney(amountOfMoneyToTransfer).
+                        senderBankAccountNumber(bankAccount.get().getBankAccountNumber()).
                         receivingBankAccountNumber(accountNumber).
                         executionDate(executionDate).
                         postingDate(postingDate).
