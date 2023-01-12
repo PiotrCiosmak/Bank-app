@@ -1,10 +1,9 @@
-Zabezpieczyć zbyt długie ciągi znaków max 255 znaków
 paymentMenu -> menu_hisotrii -> 1.wszystkie rachunki razem, 2.,3.... każdy rachunek oddzielnie
 paymentMenu -> przelew -> wprowadż dane do przelewu -> wykonaj -> wykonuje się -> podsumowanie -> menu główne
 paymentMenu -> przelew -> wprowadż dane do przelewu -> wykonaj -> błędne dane -> prosi o podanie poprawnych danych lub o wyjście do menu głównego
 deskop dokończyć
-może zaimplementować jeszcze jakieś wzorce projektowe
-
+implemtacj proxy do długosci znaków max 255
+ogarnać exceptions
 
 POZA KODEM:
 Dla każdej funkcji, klasy itd. napisac dokumentację
