@@ -114,7 +114,7 @@ public class PersonalDataService extends AbstractService
     PersonalData createPersonalData()
     {
         PersonalData personalData = new PersonalData();
-        System.out.println("---WPROWADŹ DANE OSOBOWE---");
+        System.out.println("\n---WPROWADŹ DANE OSOBOWE---");
 
         String firstName;
         System.out.print("Podaj imie: ");
