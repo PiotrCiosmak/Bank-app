@@ -11,6 +11,7 @@ import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Scanner;
@@ -98,6 +99,11 @@ public class AbstractService
             System.exit(1);
         }
         return paymentCard.get();
+    }
+
+    protected boolean isNumberNegative(BigDecimal number)
+    {
+        return number.compareTo(BigDecimal.ZERO) < 0;
     }
 
     protected boolean checkIfCorrectProductIsSelected(int selectedProduct, int numberOfProducts)
