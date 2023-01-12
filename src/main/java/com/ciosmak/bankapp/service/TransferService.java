@@ -140,10 +140,7 @@ public class TransferService extends AbstractService
                 {
                     transfer.setDone(true);
                     Optional<BankAccount> bankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
-                    if (bankAccount.isPresent())
-                    {
-                        bankAccount.get().setBalance(bankAccount.get().getBalance().add(transfer.getAmountOfMoney()));
-                    }
+                    bankAccount.ifPresent(account -> account.setBalance(account.getBalance().add(transfer.getAmountOfMoney())));
                 }
             }
         }
