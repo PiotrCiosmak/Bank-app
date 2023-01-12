@@ -51,51 +51,6 @@ public class BankAccountService extends AbstractService
         bankAccountRepository.save(bankAccount);
     }
 
-    public Long chooseOneBankAccount(UserId userId)
-    {
-        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
-        int amountOfBankAccounts = bankAccountsList.size();
-        int selectedBankAccount;
-
-        while (true)
-        {
-            try
-            {
-                System.out.println("\n---WYBIERZ RACHUNEK BANKOWY---");
-                for (int i = 0; i < amountOfBankAccounts; ++i)
-                {
-                    System.out.println(i + 1 + ". " + bankAccountsList.get(i).getName());
-                }
-                System.out.print("Wybieram: ");
-                selectedBankAccount = scanner.nextInt();
-                selectedBankAccount--;
-                scanner = new Scanner(System.in);
-                if (checkIfCorrectProductIsSelected(selectedBankAccount, amountOfBankAccounts))
-                {
-                    return bankAccountsList.get(selectedBankAccount).getId();
-                }
-                else
-                {
-                    throw new InputMismatchException();
-                }
-
-            }
-            catch (InputMismatchException e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.");
-                System.err.flush();
-            }
-            catch (Exception e)
-            {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
-            }
-        }
-    }
-
     public void showBankAccount(BankAccountId bankAccountId)
     {
         BankAccount bankAccount = getBankAccountById(bankAccountId, bankAccountRepository);
@@ -143,6 +98,51 @@ public class BankAccountService extends AbstractService
             }
         }
         return numberOfOpenBankAccounts;
+    }
+
+    public Long chooseOneBankAccount(UserId userId)
+    {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        int amountOfBankAccounts = bankAccountsList.size();
+        int selectedBankAccount;
+
+        while (true)
+        {
+            try
+            {
+                System.out.println("\n---WYBIERZ RACHUNEK BANKOWY---");
+                for (int i = 0; i < amountOfBankAccounts; ++i)
+                {
+                    System.out.println(i + 1 + ". " + bankAccountsList.get(i).getName());
+                }
+                System.out.print("Wybieram: ");
+                selectedBankAccount = scanner.nextInt();
+                selectedBankAccount--;
+                scanner = new Scanner(System.in);
+                if (checkIfCorrectProductIsSelected(selectedBankAccount, amountOfBankAccounts))
+                {
+                    return bankAccountsList.get(selectedBankAccount).getId();
+                }
+                else
+                {
+                    throw new InputMismatchException();
+                }
+
+            }
+            catch (InputMismatchException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
     }
 
     private String createBankAccountName(String message)
