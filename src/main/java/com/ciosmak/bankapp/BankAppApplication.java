@@ -21,8 +21,8 @@ public class BankAppApplication implements CommandLineRunner
     @Override
     public void run(String[] args)
     {
-        Menu.loginMenu(userService, identityDocumentService, bankAccountService, paymentCardService);
-        Menu.mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
+        Menu.loginMenu(userService, identityDocumentService, bankAccountService, paymentCardService, transferService);
+        Menu.mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService);
     }
 
     private final UserService userService;
@@ -31,4 +31,5 @@ public class BankAppApplication implements CommandLineRunner
     private final IdentityDocumentService identityDocumentService;
     private final BankAccountService bankAccountService;
     private final PaymentCardService paymentCardService;
+    private final TransferService transferService;
 }
