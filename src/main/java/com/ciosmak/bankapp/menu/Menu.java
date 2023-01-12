@@ -114,7 +114,7 @@ public class Menu
     {
         System.out.println("\n---PULPIT---");
         System.out.println("Łączny balans: " + bankAccountService.getBalanceFromAllBankAccounts(userId));
-        System.out.println("Wydatki od początku bieżącego miesiąca: " + historyService.getExpensesForCurrentMonth(userId) + " ");//TODO pokazać wydatki ze wszystkich rachunków z danego miesiaca
+        System.out.println("Wydatki od początku bieżącego miesiąca: " + historyService.getExpensesForCurrentMonth(userId) + " ");
         System.out.println("Ilość aktywnych rachunków: " + bankAccountService.getNumberOfOpenBankAccounts(userId));
         System.out.println("Ilość aktywnych kart płatniczych: " + paymentCardService.getNumberOfNoPermanentlyBlockedPaymentCards(userId));
         System.out.println("---HISTORIA---");
