@@ -22,7 +22,7 @@ public class BankAppApplication implements CommandLineRunner
     public void run(String[] args)
     {
         Menu.loginMenu(userService, identityDocumentService, bankAccountService, paymentCardService, transferService);
-        Menu.mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService);
+        Menu.mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
     }
 
     private final UserService userService;
@@ -32,4 +32,5 @@ public class BankAppApplication implements CommandLineRunner
     private final BankAccountService bankAccountService;
     private final PaymentCardService paymentCardService;
     private final TransferService transferService;
+    private final HistoryService historyService;
 }
