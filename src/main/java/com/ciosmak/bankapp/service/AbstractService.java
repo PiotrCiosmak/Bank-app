@@ -22,11 +22,11 @@ public class AbstractService
     {
         StringBuilder result = new StringBuilder(line.length());
         String[] words = line.split("\\s+");
-        for (int i = 0; i < words.length; ++i)
+        for (String word : words)
         {
-            if (words[i].length() > 0)
+            if (word.length() > 0)
             {
-                result.append(Character.toUpperCase(words[i].charAt(0))).append(words[i].substring(1).toLowerCase()).append(" ");
+                result.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase()).append(" ");
             }
         }
         return result.toString().trim();
@@ -108,7 +108,7 @@ public class AbstractService
 
     protected boolean checkIfCorrectProductIsSelected(int selectedProduct, int numberOfProducts)
     {
-        return selectedProduct >= 0 && selectedProduct <= numberOfProducts;
+        return selectedProduct >= 0 && selectedProduct < numberOfProducts;
     }
 
     protected Scanner scanner = new Scanner(System.in);
