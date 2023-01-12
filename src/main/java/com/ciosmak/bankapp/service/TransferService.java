@@ -37,7 +37,7 @@ public class TransferService extends AbstractService
                 amountOfMoney = scanner.nextBigDecimal();
                 Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
                 Matcher matcher = pattern.matcher(amountOfMoney.toString());
-                if (numberIsNegative(amountOfMoney))
+                if (isNumberNegative(amountOfMoney))
                 {
                     throw new IllegalAccessException();
                 }

@@ -91,7 +91,7 @@ public class AbstractPaymentCardService extends AbstractService
                 limitPerDay = scanner.nextBigDecimal();
                 Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
                 Matcher matcher = pattern.matcher(limitPerDay.toString());
-                if (numberIsNegative(limitPerDay))
+                if (isNumberNegative(limitPerDay))
                 {
                     throw new IllegalAccessException();
                 }
