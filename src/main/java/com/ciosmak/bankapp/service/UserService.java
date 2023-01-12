@@ -160,7 +160,7 @@ public class UserService extends AbstractService
 
     private boolean passwordIsCorrect(String password)
     {
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^_&-+=()])(?=\\S+$).{8,20}$";
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!`~'\"^_&-+=()])(?=\\S+$).{8,20}$";
         return Pattern.compile(passwordRegex).matcher(password).matches();
     }
 
