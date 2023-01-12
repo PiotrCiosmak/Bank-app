@@ -56,12 +56,9 @@ public class PersonalDataService extends AbstractService
                                 System.out.println("Numer telefonu został zaktualizowany.");
                                 break;
                             }
-                            else
-                            {
-                                System.err.println("Podany numer telefonu jest błędny.\nNumer telefonu powinien się składać tylko z 9 cyfr.");
-                                System.err.flush();
-                                System.out.print("Ponownie podaj numer telefonu: ");
-                            }
+                            System.err.println("Podany numer telefonu jest błędny.\nNumer telefonu powinien się składać tylko z 9 cyfr.");
+                            System.err.flush();
+                            System.out.print("Ponownie podaj numer telefonu: ");
                         }
                     }
                     case 2 ->
@@ -232,18 +229,8 @@ public class PersonalDataService extends AbstractService
 
     private boolean phoneNumberIsCorrect(String phoneNumber)
     {
-        if (phoneNumber.length() == 12)
-        {
-            for (int i = 3; i < phoneNumber.length(); ++i)
-            {
-                if (!Character.isDigit(phoneNumber.charAt(i)))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
+        String phoneNumberWithoutCodeArea = phoneNumber.substring(3);
+        return phoneNumberWithoutCodeArea.matches("^[0-9]*$") && phoneNumber.length() == 12;
     }
 
     private final UserRepository userRepository;
