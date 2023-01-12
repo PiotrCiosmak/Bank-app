@@ -82,7 +82,7 @@ public class Menu
                 switch (selectedOption)
                 {
                     case 1 -> desktop(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
-                    case 2 -> paymentMenu(userService);
+                    case 2 -> paymentMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     case 3 -> products(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     case 4 -> setting(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
                     case 5 -> System.exit(0);
@@ -158,9 +158,53 @@ public class Menu
         }
     }
 
-    public static void paymentMenu(UserService userService)
+    public static void paymentMenu(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
     {
+        while (true)
+        {
+            int selectedOption;
+            try
+            {
+                System.out.println("\n---PŁATNOŚCI---");
+                System.out.println("1. Nowy przelew");
+                System.out.println("2. Historia");
+                System.out.println("3. Wstecz");
+                System.out.print("Wybieram: ");
+                selectedOption = scanner.nextInt();
 
+                switch (selectedOption)
+                {
+                    case 1 ->
+                    {
+
+                        return;
+                    }
+                    case 2 ->
+                    {
+                        return;
+                    }
+                    case 3 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService);
+                    default ->
+                    {
+                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
+                        System.err.flush();
+                    }
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 4.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
     }
 
     public static void products(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService)
