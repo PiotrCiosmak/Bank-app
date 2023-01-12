@@ -21,7 +21,7 @@ public class AbstractPaymentCardService extends AbstractService
                 debt = scanner.nextBigDecimal();
                 Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
                 Matcher matcher = pattern.matcher(debt.toString());
-                if (checkIfDebtBalanceIsCorrect(debt, maxDebt))
+                if (checkIfBigDecimalIsCorrect(debt, maxDebt))
                 {
                     if (!matcher.find())
                     {
@@ -41,7 +41,7 @@ public class AbstractPaymentCardService extends AbstractService
         }
     }
 
-    protected boolean checkIfDebtBalanceIsCorrect(BigDecimal debt, BigDecimal maxDebt)
+    protected boolean checkIfBigDecimalIsCorrect(BigDecimal debt, BigDecimal maxDebt)
     {
         return debt.compareTo(BigDecimal.valueOf(0)) >= 0 && debt.compareTo(maxDebt) <= 0;
     }
@@ -91,6 +91,10 @@ public class AbstractPaymentCardService extends AbstractService
                 limitPerDay = scanner.nextBigDecimal();
                 Pattern pattern = Pattern.compile("\\d+\\.(\\d{3,})");
                 Matcher matcher = pattern.matcher(limitPerDay.toString());
+                if (numberIsNegative(limitPerDay))
+                {
+                    throw new IllegalAccessException();
+                }
                 if (numberIsTooLong(limitPerDay))
                 {
                     throw new Exception();
@@ -105,6 +109,12 @@ public class AbstractPaymentCardService extends AbstractService
             {
                 scanner = new Scanner(System.in);
                 System.err.println("Podana kwota limitu jest błędna.\nKwota limitu powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
+                System.err.flush();
+            }
+            catch (IllegalAccessException e)
+            {
+                scanner = new Scanner(System.in);
+                System.err.println("Podana kwota limitu jest błędna.\nKwota limitu nie może byc liczbą ujemną.\nSpróbuj ponownie");
                 System.err.flush();
             }
             catch (Exception e)
