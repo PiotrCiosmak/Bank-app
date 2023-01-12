@@ -31,6 +31,10 @@ public class Transfer extends AbstractEntity
     private String receivingBankAccountNumber;
 
     @ToString.Include
+    @Column(name = "sender_bank_account_number", length = 26, nullable = false)
+    private String senderBankAccountNumber;
+
+    @ToString.Include
     @Column(name = "execution_date", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime executionDate;
 
