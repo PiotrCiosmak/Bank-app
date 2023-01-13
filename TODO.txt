@@ -1,7 +1,4 @@
-dodać do histori przychodzących(+) i wychodzących transakcji(-)
-desktop - pokazać 5 ostatnich transakcji
-zmienić "findy" dla przelewów
-
+sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
 implemtacj proxy do długosci znaków max 255
 ogarnać exceptions
 ogarnac warningi
