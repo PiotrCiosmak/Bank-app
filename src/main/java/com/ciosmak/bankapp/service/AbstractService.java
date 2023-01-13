@@ -100,5 +100,10 @@ public class AbstractService
         return selectedProduct >= 0 && selectedProduct < numberOfProducts;
     }
 
+    protected boolean numberIsTooLong(BigDecimal number)
+    {
+        return number.toString().length() > 37;
+    }
+
     protected Scanner scanner = new Scanner(System.in);
 }
