@@ -118,7 +118,8 @@ public class Menu
         System.out.println("Przychody od początku bieżącego miesiąca: " + historyService.getIncomeForCurrentMonth(userId) + "zł");
         System.out.println("Ilość aktywnych rachunków: " + bankAccountService.getNumberOfOpenBankAccounts(userId));
         System.out.println("Ilość aktywnych kart płatniczych: " + paymentCardService.getNumberOfNoPermanentlyBlockedPaymentCards(userId));
-        //TODO pokazać 5 ostatnich transakcji
+        System.out.println("---NAJNOWSZA HISTORIA---");
+        historyService.showLastFiveTransactions(userId);
         int selectedOption;
         while (true)
         {
@@ -131,7 +132,11 @@ public class Menu
                 selectedOption = scanner.nextInt();
                 switch (selectedOption)
                 {
-                    case 1 -> historyService.showHistory(userId);
+                    case 1 ->
+                    {
+                        historyService.showHistory(userId);
+                        return;
+                    }
                     case 2 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     default ->
                     {
