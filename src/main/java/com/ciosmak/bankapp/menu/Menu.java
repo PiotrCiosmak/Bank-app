@@ -1,6 +1,7 @@
 package com.ciosmak.bankapp.menu;
 
 import com.ciosmak.bankapp.bank.account.id.BankAccountId;
+import com.ciosmak.bankapp.exception.FatalError;
 import com.ciosmak.bankapp.exception.IllegalOptionSelectedException;
 import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
 import com.ciosmak.bankapp.service.*;
@@ -57,10 +58,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -103,10 +101,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -154,10 +149,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -196,10 +188,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -254,10 +243,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -322,10 +308,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -364,10 +347,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -414,10 +394,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -464,10 +441,7 @@ public class Menu
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }

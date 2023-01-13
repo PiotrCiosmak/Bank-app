@@ -4,6 +4,7 @@ import com.ciosmak.bankapp.bank.account.id.BankAccountId;
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.PaymentCard;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.exception.FatalError;
 import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
 import com.ciosmak.bankapp.repository.PaymentCardRepository;
@@ -64,11 +65,7 @@ public class AbstractService
         Optional<User> user = userRepository.findById(userId.getId());
         if (user.isEmpty())
         {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK UŻYTKOWNIKA O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
+            FatalError.exit();
         }
         return user.get();
     }
@@ -78,11 +75,7 @@ public class AbstractService
         Optional<BankAccount> bankAccount = bankAccountRepository.findById(bankAccountId.getId());
         if (bankAccount.isEmpty())
         {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK RACHUNKU BANKOWEGO O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
+            FatalError.exit();
         }
         return bankAccount.get();
     }
@@ -92,11 +85,7 @@ public class AbstractService
         Optional<PaymentCard> paymentCard = paymentCardRepository.findById(paymentCardId.getId());
         if (paymentCard.isEmpty())
         {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("BRAK KARTY PŁATNICZEJ O TAKIM ID W BAZIE!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
+            FatalError.exit();
         }
         return paymentCard.get();
     }
