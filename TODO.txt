@@ -1,6 +1,5 @@
 sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
 implemtacj proxy do długosci znaków max 255
-ogarnać exceptions
 ogarnac duplitkaty
 
 POZA KODEM:
