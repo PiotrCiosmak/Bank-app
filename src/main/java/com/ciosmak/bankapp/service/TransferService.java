@@ -110,6 +110,7 @@ public class TransferService extends AbstractService
                         postingDate(postingDate).
                         build();
                 transferRepository.save(transfer);
+                bankAccount.get().getTransfers().add(transfer);
 
                 System.out.println("\n---PRZELEW ZOSTAŁ WYKONANY---");
             }
