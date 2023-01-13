@@ -2,6 +2,8 @@ package com.ciosmak.bankapp.service;
 
 import com.ciosmak.bankapp.entity.IdentityDocument;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.exception.FatalError;
+import com.ciosmak.bankapp.exception.InvalidDateException;
 import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 @Slf4j
@@ -183,15 +186,22 @@ public class IdentityDocumentService extends AbstractService
                 }
                 else
                 {
-                    System.err.println("Podana data nie istnieje.\nSpróbuj ponownie.");
-                    System.err.flush();
+                    throw new InvalidDateException("Podana data nie istnieje.\nSpróbuj ponownie.\n", "");
                 }
             }
-            catch (Exception e)
+            catch (InvalidDateException e)
+            {
+                e.show();
+            }
+            catch (InputMismatchException e)
             {
                 scanner = new Scanner(System.in);
                 System.err.println("Wystąpił błąd.\nNależy wprowadzać tylko cyfry.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (Exception e)
+            {
+                FatalError.exit();
             }
         }
     }
