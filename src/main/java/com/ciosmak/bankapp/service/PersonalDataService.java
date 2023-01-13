@@ -2,6 +2,8 @@ package com.ciosmak.bankapp.service;
 
 import com.ciosmak.bankapp.entity.PersonalData;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.exception.FatalError;
+import com.ciosmak.bankapp.exception.IllegalOptionSelectedException;
 import com.ciosmak.bankapp.repository.PersonalDataRepository;
 import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
@@ -85,11 +87,7 @@ public class PersonalDataService extends AbstractService
                     {
                         return;
                     }
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelectedException("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -98,12 +96,13 @@ public class PersonalDataService extends AbstractService
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 4.\nSpróbuj ponownie.");
                 System.err.flush();
             }
+            catch (IllegalOptionSelectedException e)
+            {
+                e.show();
+            }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
