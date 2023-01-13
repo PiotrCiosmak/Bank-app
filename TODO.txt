@@ -4,6 +4,7 @@ zmienić "findy" dla przelewów
 
 implemtacj proxy do długosci znaków max 255
 ogarnać exceptions
+ogarnac warningi
 
 POZA KODEM:
 Dla każdej funkcji, klasy itd. napisac dokumentację
