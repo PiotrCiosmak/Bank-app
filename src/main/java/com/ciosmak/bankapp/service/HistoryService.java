@@ -2,6 +2,8 @@ package com.ciosmak.bankapp.service;
 
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.Transfer;
+import com.ciosmak.bankapp.exception.FatalError;
+import com.ciosmak.bankapp.exception.IncorrectBankAccountException;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
 import com.ciosmak.bankapp.repository.TransferRepository;
 import com.ciosmak.bankapp.user.id.UserId;
@@ -91,10 +93,7 @@ public class HistoryService extends AbstractService
                         }
                         else
                         {
-                            System.err.println("BŁĄD KRYTYCZNY!!!");
-                            System.err.println("OPUSZCZANIE PROGRAMU");
-                            System.err.flush();
-                            System.exit(1);
+                            FatalError.exit();
                         }
                     }
                     System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
@@ -132,10 +131,7 @@ public class HistoryService extends AbstractService
                             }
                             else
                             {
-                                System.err.println("BŁĄD KRYTYCZNY!!!");
-                                System.err.println("OPUSZCZANIE PROGRAMU");
-                                System.err.flush();
-                                System.exit(1);
+                                FatalError.exit();
                             }
                         }
                         System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
@@ -148,10 +144,7 @@ public class HistoryService extends AbstractService
             }
             else
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -194,10 +187,7 @@ public class HistoryService extends AbstractService
                     }
                     else
                     {
-                        System.err.println("BŁĄD KRYTYCZNY!!!");
-                        System.err.println("OPUSZCZANIE PROGRAMU");
-                        System.err.flush();
-                        System.exit(1);
+                        FatalError.exit();
                     }
                 }
                 System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
@@ -272,22 +262,18 @@ public class HistoryService extends AbstractService
                 }
                 else
                 {
-                    throw new InputMismatchException();
+                    throw new IncorrectBankAccountException("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.\n", "");
                 }
 
             }
-            catch (InputMismatchException e)
+            catch (IncorrectBankAccountException e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.");
-                System.err.flush();
+                e.show();
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
