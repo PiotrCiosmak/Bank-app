@@ -1,6 +1,7 @@
 package com.ciosmak.bankapp.menu;
 
 import com.ciosmak.bankapp.bank.account.id.BankAccountId;
+import com.ciosmak.bankapp.exception.IllegalOptionSelected;
 import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
 import com.ciosmak.bankapp.service.*;
 import com.ciosmak.bankapp.user.id.UserId;
@@ -41,11 +42,7 @@ public class Menu
                         return;
                     }
                     case 3 -> System.exit(0);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -53,6 +50,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 3.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -87,11 +88,7 @@ public class Menu
                     case 3 -> products(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     case 4 -> setting(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     case 5 -> System.exit(0);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -99,6 +96,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 5.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -138,11 +139,7 @@ public class Menu
                         return;
                     }
                     case 2 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -150,6 +147,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 2.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -180,11 +181,7 @@ public class Menu
                     case 1 -> transferService.create(userId);
                     case 2 -> historyService.showHistory(userId);
                     case 3 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -192,6 +189,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 4.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -238,11 +239,7 @@ public class Menu
                         return;
                     }
                     case 4 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -250,6 +247,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 4.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -306,11 +307,7 @@ public class Menu
                         return;
                     }
                     case 6 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -318,6 +315,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 6.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -348,11 +349,7 @@ public class Menu
                     case 1 -> bankAccountService.showBankAccount(bankAccountId);
                     case 2 -> bankAccountService.changeBankAccountName(bankAccountId);
                     case 3 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -360,6 +357,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 3.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -398,11 +399,7 @@ public class Menu
                     case 5 -> paymentCardService.blockPermanently(paymentCardId);
                     case 6 -> paymentCardMenuExternal(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     case 7 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -410,6 +407,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 7.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
@@ -448,11 +449,7 @@ public class Menu
                     case 5 -> paymentCardService.changeSurchargeTransactionsOption(paymentCardId);
                     case 6 -> paymentCardService.changeDebitOption(paymentCardId);
                     case 7 -> paymentCardMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
-                    default ->
-                    {
-                        System.err.println("Nie ma takiej opcji.\nSpróbuj ponownie.");
-                        System.err.flush();
-                    }
+                    default -> throw new IllegalOptionSelected("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }
             }
             catch (InputMismatchException e)
@@ -460,6 +457,10 @@ public class Menu
                 scanner = new Scanner(System.in);
                 System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do 7.\nSpróbuj ponownie.");
                 System.err.flush();
+            }
+            catch (IllegalOptionSelected e)
+            {
+                e.show();
             }
             catch (Exception e)
             {
