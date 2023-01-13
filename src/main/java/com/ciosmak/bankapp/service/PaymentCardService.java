@@ -3,6 +3,9 @@ package com.ciosmak.bankapp.service;
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.PaymentCard;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.exception.FatalError;
+import com.ciosmak.bankapp.exception.IllegalAnswerTrueFalseException;
+import com.ciosmak.bankapp.exception.IncorrectBankAccountException;
 import com.ciosmak.bankapp.payment.card.id.PaymentCardId;
 import com.ciosmak.bankapp.payment.card.status.NotActivated;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
@@ -100,22 +103,18 @@ public class PaymentCardService extends AbstractPaymentCardService
                 }
                 else
                 {
-                    throw new InputMismatchException();
+                    throw new IncorrectBankAccountException("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.\n", "");
                 }
 
             }
-            catch (InputMismatchException e)
+            catch (IncorrectBankAccountException e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.");
-                System.err.flush();
+                e.show();
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -265,15 +264,17 @@ public class PaymentCardService extends AbstractPaymentCardService
                 }
                 else
                 {
-                    System.err.println("Nie ma takiej opcji.\nNależy wprowadzić znak 'T' lub znak 'N'.\nSpróbuj ponownie.");
-                    System.err.flush();
+                    throw new IllegalAnswerTrueFalseException("Nie ma takiej opcji.\nNależy wprowadzić znak 'T' lub znak 'N'.\nSpróbuj ponownie.\n", "");
                 }
+            }
+            catch (IllegalAnswerTrueFalseException e)
+            {
+                scanner = new Scanner(System.in);
+                e.show();
             }
             catch (Exception e)
             {
-                scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić znak 'T' lub znak 'N'.\nSpróbuj ponownie.");
-                System.err.flush();
+                FatalError.exit();
             }
         }
     }
