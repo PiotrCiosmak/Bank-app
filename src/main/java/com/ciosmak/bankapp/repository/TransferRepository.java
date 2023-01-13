@@ -9,5 +9,9 @@ public interface TransferRepository extends JpaRepository<Transfer, Long>
 {
     ArrayList<Transfer> findAll();
 
-    ArrayList<Transfer> findBySenderBankAccountNumber(String senderBankAccountNumber);
+    ArrayList<Transfer> findByReceivingBankAccountNumber(String receivingBankAccountNumber);
+
+    ArrayList<Transfer> findByBankAccountsId(Long bankAccountId);
+
+
 }
