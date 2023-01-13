@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Slf4j
@@ -54,10 +55,159 @@ public class HistoryService extends AbstractService
         return expensesForCurrentMonth;
     }
 
-    //todo
     public void showHistory(UserId userId)
     {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        ArrayList<Transfer> transfersList;
+        char sign;
+        String data;
+        String destinationBankAccountInfo = "";
+        Optional<BankAccount> destinationBankAccount;
 
+        Long selectedBankAccountId = chooseOneBankAccount(bankAccountsList);
+        if (selectedBankAccountId == 0L)
+        {
+            boolean transferListIsEmpty = true;
+            for (var bankAccount : bankAccountsList)
+            {
+                transfersList = transferRepository.findByBankAccountsIdOrReceivingBankAccountNumber(bankAccount.getId(), bankAccount.getBankAccountNumber());
+                for (var transfer : transfersList)
+                {
+                    transferListIsEmpty = false;
+                    if (transfer.getSenderBankAccountNumber().equals(bankAccount.getBankAccountNumber()))
+                    {
+                        sign = '-';
+                        data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
+                        destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.getName();
+                    }
+                    else
+                    {
+                        sign = '+';
+                        data = Integer.toString(transfer.getPostingDate().getDayOfMonth()) + '.' + transfer.getPostingDate().getMonthValue() + '.' + transfer.getPostingDate().getYear();
+                        destinationBankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
+                        if (destinationBankAccount.isPresent())
+                        {
+                            destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                        }
+                        else
+                        {
+                            System.err.println("BŁĄD KRYTYCZNY!!!");
+                            System.err.println("OPUSZCZANIE PROGRAMU");
+                            System.err.flush();
+                            System.exit(1);
+                        }
+                    }
+                    System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                }
+            }
+            if (transferListIsEmpty)
+            {
+                System.out.println("Brak transakcji");
+            }
+        }
+        else
+        {
+            Optional<BankAccount> bankAccount = bankAccountRepository.findById(selectedBankAccountId);
+            if (bankAccount.isPresent())
+            {
+                transfersList = transferRepository.findByBankAccountsIdOrReceivingBankAccountNumber(bankAccount.get().getId(), bankAccount.get().getBankAccountNumber());
+                if (!transfersList.isEmpty())
+                {
+                    for (var transfer : transfersList)
+                    {
+                        if (transfer.getSenderBankAccountNumber().equals(bankAccount.get().getBankAccountNumber()))
+                        {
+                            sign = '-';
+                            data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
+                            destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.get().getName();
+                        }
+                        else
+                        {
+                            sign = '+';
+                            data = Integer.toString(transfer.getPostingDate().getDayOfMonth()) + '.' + transfer.getPostingDate().getMonthValue() + '.' + transfer.getPostingDate().getYear();
+                            destinationBankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
+                            if (destinationBankAccount.isPresent())
+                            {
+                                destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                            }
+                            else
+                            {
+                                System.err.println("BŁĄD KRYTYCZNY!!!");
+                                System.err.println("OPUSZCZANIE PROGRAMU");
+                                System.err.flush();
+                                System.exit(1);
+                            }
+                        }
+                        System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                    }
+                }
+                else
+                {
+                    System.out.println("Brak transakcji");
+                }
+            }
+            else
+            {
+                System.err.println("BŁĄD KRYTYCZNY!!!");
+                System.err.println("OPUSZCZANIE PROGRAMU");
+                System.err.flush();
+                System.exit(1);
+            }
+        }
+    }
+
+    public void showLastFiveTransactions(UserId userId)
+    {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        ArrayList<Transfer> transfersList;
+        char sign;
+        String data;
+        String destinationBankAccountInfo = "";
+        Optional<BankAccount> destinationBankAccount;
+        int counter = 0;
+
+        boolean transferListIsEmpty = true;
+        for (var bankAccount : bankAccountsList)
+        {
+            transfersList = transferRepository.findByBankAccountsIdOrReceivingBankAccountNumber(bankAccount.getId(), bankAccount.getBankAccountNumber());
+            for (var transfer : transfersList)
+            {
+                if (counter == 5)
+                {
+                    return;
+                }
+                transferListIsEmpty = false;
+                if (transfer.getSenderBankAccountNumber().equals(bankAccount.getBankAccountNumber()))
+                {
+                    sign = '-';
+                    data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
+                    destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.getName();
+                }
+                else
+                {
+                    sign = '+';
+                    data = Integer.toString(transfer.getPostingDate().getDayOfMonth()) + '.' + transfer.getPostingDate().getMonthValue() + '.' + transfer.getPostingDate().getYear();
+                    destinationBankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
+                    if (destinationBankAccount.isPresent())
+                    {
+                        destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                    }
+                    else
+                    {
+                        System.err.println("BŁĄD KRYTYCZNY!!!");
+                        System.err.println("OPUSZCZANIE PROGRAMU");
+                        System.err.flush();
+                        System.exit(1);
+                    }
+                }
+                System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                counter++;
+            }
+        }
+        if (transferListIsEmpty)
+        {
+            System.out.println("Brak transakcji");
+        }
     }
 
     private ArrayList<Transfer> getAllSenderTransfersByUserId(UserId userId)
@@ -93,9 +243,8 @@ public class HistoryService extends AbstractService
         return transfersList;
     }
 
-    private Long chooseOneBankAccount(UserId userId)
+    private Long chooseOneBankAccount(ArrayList<BankAccount> bankAccountsList)
     {
-        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
         int amountOfBankAccounts = bankAccountsList.size();
         int selectedBankAccount;
 
@@ -103,7 +252,7 @@ public class HistoryService extends AbstractService
         {
             try
             {
-                System.out.println("---WYBIERZ RACHUNEK BANKOWY---");
+                System.out.println("\n---WYBIERZ RACHUNEK BANKOWY---");
                 System.out.println("1. Wszystkie");
                 for (int i = 0; i < amountOfBankAccounts; ++i)
                 {
