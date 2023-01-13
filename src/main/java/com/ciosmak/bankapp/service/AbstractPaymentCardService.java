@@ -111,9 +111,4 @@ public class AbstractPaymentCardService extends AbstractService
             }
         }
     }
-
-    private boolean numberIsTooLong(BigDecimal number)
-    {
-        return number.toString().length() > 37;
-    }
 }
