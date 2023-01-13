@@ -21,55 +21,55 @@ public class NotActivated extends AbstractPaymentCardService implements PaymentC
     @Override
     public void showPaymentCard(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void changeLimits(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void blockTemporarily(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void unlock(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void blockPermanently(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void changePin(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void changeContactlessTransactionOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void changeMagneticStripOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
     public void changeTransactionsWithDdcServiceOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
-        activatePaymentCard(paymentCardId,paymentCardRepository);
+        activatePaymentCard(paymentCardId, paymentCardRepository);
     }
 
     @Override
@@ -102,9 +102,9 @@ public class NotActivated extends AbstractPaymentCardService implements PaymentC
                 System.out.println("Karta płatnicza została aktywowana");
                 break;
             }
-                System.err.println("Podany kod pin jest błędny.\nKod pin powinien się składać tylko z 4 cyfr.");
-                System.err.flush();
-                System.out.print("Ponownie podaj kodu pin: ");
+            System.err.println("Podany kod pin jest błędny.\nKod pin powinien się składać tylko z 4 cyfr.");
+            System.err.flush();
+            System.out.print("Ponownie podaj kodu pin: ");
         }
     }
 

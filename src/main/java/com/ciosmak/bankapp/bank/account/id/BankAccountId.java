@@ -1,6 +1,5 @@
 package com.ciosmak.bankapp.bank.account.id;
 
-
 public final class BankAccountId
 {
     private static BankAccountId instance;

@@ -29,7 +29,7 @@ public class AbstractPaymentCardService extends AbstractService
                     }
                     throw new InputMismatchException();
                 }
-                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z zakresu od 0 do " + maxDebt.toString() + ".\nSpróbuj ponownie.");
+                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z zakresu od 0 do " + maxDebt + ".\nSpróbuj ponownie.");
                 System.err.flush();
             }
             catch (InputMismatchException e)

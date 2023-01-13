@@ -191,9 +191,9 @@ public class PaymentCardService extends AbstractPaymentCardService
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
         int numberOfNoPermanentlyBlockedPaymentCards = 0;
-        for (var bankAccount: bankAccountsList)
+        for (var bankAccount : bankAccountsList)
         {
-            if(!bankAccount.getPaymentCard().getStatus().toString().equals("BLOCKED_PERMANENTLY"))
+            if (!bankAccount.getPaymentCard().getStatus().toString().equals("BLOCKED_PERMANENTLY"))
             {
                 numberOfNoPermanentlyBlockedPaymentCards++;
             }

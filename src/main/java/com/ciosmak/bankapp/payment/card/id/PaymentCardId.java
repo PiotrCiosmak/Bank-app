@@ -1,6 +1,5 @@
 package com.ciosmak.bankapp.payment.card.id;
 
-
 public final class PaymentCardId
 {
     private static PaymentCardId instance;

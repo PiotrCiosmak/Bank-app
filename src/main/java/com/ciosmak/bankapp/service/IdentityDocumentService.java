@@ -36,7 +36,7 @@ public class IdentityDocumentService extends AbstractService
         LocalDate releaseDate;
         while (true)
         {
-            releaseDate = createDate("---WPROWADŹ DATĘ WYDANIA---");
+            releaseDate = createDate();
             if (releaseDate.plusYears(10).isAfter(LocalDate.now()))
             {
                 if (!releaseDate.isAfter(LocalDate.now()))
@@ -88,7 +88,7 @@ public class IdentityDocumentService extends AbstractService
         LocalDate releaseDate;
         while (true)
         {
-            releaseDate = createDate("---WPROWADŹ DATĘ WYDANIA---");
+            releaseDate = createDate();
             if (releaseDate.plusYears(10).isAfter(LocalDate.now()))
             {
                 if (!releaseDate.isAfter(LocalDate.now()))
@@ -158,22 +158,22 @@ public class IdentityDocumentService extends AbstractService
         return false;
     }
 
-    private LocalDate createDate(String label)
+    private LocalDate createDate()
     {
         while (true)
         {
             try
             {
-                System.out.println(label);
-                Integer day;
+                System.out.println("---WPROWADŹ DATĘ WYDANIA---");
+                int day;
                 System.out.print("Podaj dzień: ");
                 day = scanner.nextInt();
 
-                Integer month;
+                int month;
                 System.out.print("Podaj miesiąc: ");
                 month = scanner.nextInt();
 
-                Integer year;
+                int year;
                 System.out.print("Podaj rok: ");
                 year = scanner.nextInt();
 

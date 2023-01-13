@@ -137,7 +137,7 @@ public class TransferService extends AbstractService
         {
             if (!transfer.isDone())
             {
-                if (transfer.getPostingDate().compareTo(transfer.getExecutionDate()) < 0)
+                if (transfer.getPostingDate().isBefore(transfer.getExecutionDate()))
                 {
                     transfer.setDone(true);
                     Optional<BankAccount> bankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
