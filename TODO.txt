@@ -1,6 +1,7 @@
-paymentMenu -> menu_hisotrii -> 1.wszystkie rachunki razem, 2.,3.... każdy rachunek oddzielnie
-dodac info ile było transakcji wychodzących w ciągu miesiaca
-deskop dokończyć
+dodać do histori przychodzących(+) i wychodzących transakcji(-)
+desktop - pokazać 5 ostatnich transakcji
+zmienić "findy" dla przelewów
+
 implemtacj proxy do długosci znaków max 255
 ogarnać exceptions
 
