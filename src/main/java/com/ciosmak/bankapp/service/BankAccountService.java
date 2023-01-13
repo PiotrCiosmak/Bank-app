@@ -4,6 +4,8 @@ import com.ciosmak.bankapp.bank.account.id.BankAccountId;
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.PaymentCard;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.exception.FatalError;
+import com.ciosmak.bankapp.exception.IncorrectBankAccountException;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
 import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
@@ -125,22 +127,17 @@ public class BankAccountService extends AbstractService
                 }
                 else
                 {
-                    throw new InputMismatchException();
+                    throw new IncorrectBankAccountException("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.\n", "");
                 }
-
             }
-            catch (InputMismatchException e)
+            catch (IncorrectBankAccountException e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.");
-                System.err.flush();
+                e.show();
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
