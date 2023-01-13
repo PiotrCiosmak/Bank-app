@@ -1,5 +1,8 @@
 package com.ciosmak.bankapp.service;
 
+import com.ciosmak.bankapp.exception.IllegalDebtAmount;
+import com.ciosmak.bankapp.exception.IllegalLimitAmount;
+
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -27,16 +30,13 @@ public class AbstractPaymentCardService extends AbstractService
                     {
                         return debt;
                     }
-                    throw new InputMismatchException();
+                    throw new IllegalDebtAmount("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna być liczbą z zakresu od 0 do " + maxDebt + ".\nSpróbuj ponownie.\n", "");
                 }
-                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z zakresu od 0 do " + maxDebt + ".\nSpróbuj ponownie.");
-                System.err.flush();
             }
-            catch (InputMismatchException e)
+            catch (IllegalDebtAmount e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Podana kwota limitu debetowego jest błędna.\nKwota limitu debetowego powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
-                System.err.flush();
+                e.show();
             }
         }
     }
@@ -93,35 +93,22 @@ public class AbstractPaymentCardService extends AbstractService
                 Matcher matcher = pattern.matcher(limitPerDay.toString());
                 if (isNumberNegative(limitPerDay))
                 {
-                    throw new IllegalAccessException();
+                    throw new IllegalLimitAmount("Podana kwota limitu jest błędna.\nKwota limitu nie może być liczbą ujemną.\nSpróbuj ponownie.\n", "");
                 }
                 if (numberIsTooLong(limitPerDay))
                 {
-                    throw new Exception();
+                    throw new IllegalLimitAmount("Podana kwota limitu jest błędna.\nKwota limitu nie może być aż tak duża.\nSpróbuj ponownie.\n", "");
                 }
                 if (!matcher.find())
                 {
                     return limitPerDay;
                 }
-                throw new InputMismatchException();
+                throw new IllegalLimitAmount("Podana kwota limitu jest błędna.\nKwota limitu powinna być liczbą z maksymalnie dwoma cyframi po przecinku.\nSpróbuj ponownie.\n", "");
             }
-            catch (InputMismatchException e)
+            catch (IllegalLimitAmount e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Podana kwota limitu jest błędna.\nKwota limitu powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
-                System.err.flush();
-            }
-            catch (IllegalAccessException e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Podana kwota limitu jest błędna.\nKwota limitu nie może byc liczbą ujemną.\nSpróbuj ponownie");
-                System.err.flush();
-            }
-            catch (Exception e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Podana kwota limitu jest błędna.\nKwota limitu jest zbyt dużą liczbą.\nSpróbuj ponownie.");
-                System.err.flush();
+                e.show();
             }
         }
     }
