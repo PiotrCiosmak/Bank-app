@@ -114,27 +114,24 @@ public class Menu
     {
         System.out.println("\n---PULPIT---");
         System.out.println("Łączny balans: " + bankAccountService.getBalanceFromAllBankAccounts(userId));
-        System.out.println("Wydatki od początku bieżącego miesiąca: " + historyService.getExpensesForCurrentMonth(userId) + " ");
+        System.out.println("Wydatki od początku bieżącego miesiąca: " + historyService.getExpensesForCurrentMonth(userId) + "zł");
+        System.out.println("Przychody od początku bieżącego miesiąca: " + historyService.getIncomeForCurrentMonth(userId) + "zł");
         System.out.println("Ilość aktywnych rachunków: " + bankAccountService.getNumberOfOpenBankAccounts(userId));
         System.out.println("Ilość aktywnych kart płatniczych: " + paymentCardService.getNumberOfNoPermanentlyBlockedPaymentCards(userId));
-        System.out.println("---HISTORIA---");
         //TODO pokazać 5 ostatnich transakcji
         int selectedOption;
         while (true)
         {
             try
             {
+                System.out.println("\n---HISTORIA---");
                 System.out.println("1. Pokaż całą historię");
                 System.out.println("2. Wstecz");
                 System.out.print("Wybieram: ");
                 selectedOption = scanner.nextInt();
                 switch (selectedOption)
                 {
-                    case 1 ->
-                    {
-                        //TODO przejdź do menu historii
-                        return;
-                    }
+                    case 1 -> historyService.showHistory(userId);
                     case 2 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     default ->
                     {
@@ -176,10 +173,7 @@ public class Menu
                 switch (selectedOption)
                 {
                     case 1 -> transferService.create(userId);
-                    case 2 ->
-                    {
-                        return;
-                    }
+                    case 2 -> historyService.showHistory(userId);
                     case 3 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     default ->
                     {
