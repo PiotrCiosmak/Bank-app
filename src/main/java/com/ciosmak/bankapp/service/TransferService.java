@@ -2,6 +2,7 @@ package com.ciosmak.bankapp.service;
 
 import com.ciosmak.bankapp.entity.BankAccount;
 import com.ciosmak.bankapp.entity.Transfer;
+import com.ciosmak.bankapp.exception.*;
 import com.ciosmak.bankapp.repository.BankAccountRepository;
 import com.ciosmak.bankapp.repository.TransferRepository;
 import com.ciosmak.bankapp.user.id.UserId;
@@ -47,30 +48,27 @@ public class TransferService extends AbstractService
                 Matcher matcher = pattern.matcher(amountOfMoneyToTransfer.toString());
                 if (isNumberNegative(amountOfMoneyToTransfer))
                 {
-                    throw new IllegalAccessException();
+                    throw new IllegalAmountException("Podana kwota jest błędna.\nKwota nie może być liczbą ujemną.\nSpróbuj ponownie.\n", "");
+                }
+                if (numberIsTooLong(amountOfMoneyToTransfer))
+                {
+                    throw new IllegalAmountException("Podana kwota jest błędna.\nKwota nie może być aż tak duża.\nSpróbuj ponownie.\n", "");
                 }
                 if (!matcher.find())
                 {
                     break;
                 }
-                throw new InputMismatchException();
+                throw new IllegalAmountException("Podana kwota jest błędna.\nKwota powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.\n", "");
+            }
+            catch (IllegalAmountException e)
+            {
+                scanner = new Scanner(System.in);
+                e.show();
             }
             catch (InputMismatchException e)
             {
                 scanner = new Scanner(System.in);
                 System.err.println("Podana kwota jest błędna.\nKwota powinna się być liczbą z maksymalnie dwiema cyframi po przecinku.\nSpróbuj ponownie.");
-                System.err.flush();
-            }
-            catch (IllegalAccessException e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Podana kwota jest błędna.\nKwota nie może byc ujemna.\nSpróbuj ponownie");
-                System.err.flush();
-            }
-            catch (Exception e)
-            {
-                scanner = new Scanner(System.in);
-                System.err.println("Podana kwota jest błędna.\nKwota jest zbyt dużą liczbą.\nSpróbuj ponownie.");
                 System.err.flush();
             }
         }
@@ -121,10 +119,7 @@ public class TransferService extends AbstractService
         }
         else
         {
-            System.err.println("BŁĄD KRYTYCZNY!!!");
-            System.err.println("OPUSZCZANIE PROGRAMU");
-            System.err.flush();
-            System.exit(1);
+            FatalError.exit();
         }
 
 
@@ -204,22 +199,18 @@ public class TransferService extends AbstractService
                 }
                 else
                 {
-                    throw new InputMismatchException();
+                    throw new IncorrectBankAccountException("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.\n", "");
                 }
 
             }
-            catch (InputMismatchException e)
+            catch (IncorrectBankAccountException e)
             {
                 scanner = new Scanner(System.in);
-                System.err.println("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.");
-                System.err.flush();
+                e.show();
             }
             catch (Exception e)
             {
-                System.err.println("BŁĄD KRYTYCZNY!!!");
-                System.err.println("OPUSZCZANIE PROGRAMU");
-                System.err.flush();
-                System.exit(1);
+                FatalError.exit();
             }
         }
     }
@@ -227,5 +218,4 @@ public class TransferService extends AbstractService
 
     private final BankAccountRepository bankAccountRepository;
     private final TransferRepository transferRepository;
-
 }
