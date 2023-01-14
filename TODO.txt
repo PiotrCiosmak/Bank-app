@@ -5,12 +5,3 @@ POZA KODEM:
 Dla każdej funkcji, klasy itd. napisac dokumentację
 Zrobić testy jednostkowe
 Zrobić diagram UML
-Napisac plik redme.md
-
-
-REGEX TABEL W BAZIE DANYCH:
-transfers:
-title
-amount_of_money - max 2 digits after comma
-execution_date - YYYY-MM-DD HH-MM-SS
-posting_date - YYYY-MM-DD-HH-MM-SS
