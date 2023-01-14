@@ -1,6 +1,4 @@
-sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
-
-POZA KODEM:
-Dla każdej funkcji, klasy itd. napisac dokumentację
-Zrobić testy jednostkowe
-Zrobić diagram UML
+1. Java doc
+2. UML
+3. Testy jednostkowe
+4. Naprawić sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
