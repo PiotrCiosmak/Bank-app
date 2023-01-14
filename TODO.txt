@@ -1,5 +1,4 @@
 sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
-ogarnac duplitkaty
 
 POZA KODEM:
 Dla każdej funkcji, klasy itd. napisac dokumentację
