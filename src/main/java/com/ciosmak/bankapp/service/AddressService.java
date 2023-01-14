@@ -17,8 +17,15 @@ import java.util.Scanner;
 @RequiredArgsConstructor
 @Transactional
 @Service
+/**
+ * <h2>Actions on the user's address</h2>
+ */
 public class AddressService extends AbstractService
 {
+    /**
+     * Change existing address
+     * @param userId user id from database (singleton)
+     */
     public void changeAddress(UserId userId)
     {
         User user = getUserById(userId, userRepository);
@@ -33,6 +40,10 @@ public class AddressService extends AbstractService
         System.out.println("ADRES ZOSTAŁ ZMIENIONY POMYŚLNIE");
     }
 
+    /**
+     * Create or change if exists the mailing address
+     * @param userId user id from database (singleton)
+     */
     public void changeMailingAddress(UserId userId)
     {
         User user = getUserById(userId, userRepository);
@@ -75,6 +86,12 @@ public class AddressService extends AbstractService
         System.out.println("ADRES KORESPONDENCYJNY ZOSTAŁ ZMIENIONY POMYŚLNIE");
     }
 
+    /**
+     * Create a new address
+     * @param label header displayed at the beginning
+     * @param isMailing information if this address isMailing
+     * @return created address
+     */
     Address createAddress(String label, boolean isMailing)
     {
         Address address = new Address();
@@ -153,6 +170,11 @@ public class AddressService extends AbstractService
         return address;
     }
 
+    /**
+     * Create a mailing address (using createAddress method)
+     * @param addresses User address list
+     * @return User address list with new mailing address
+     */
     ArrayList<Address> createMailingAddress(ArrayList<Address> addresses)
     {
         char mailingAddressIsDifferent;
@@ -186,6 +208,11 @@ public class AddressService extends AbstractService
         return addresses;
     }
 
+    /**
+     * Prepare post code format
+     * @param postCode user-entered post code
+     * @return formatted post code
+     */
     private String preparePostCode(String postCode)
     {
         if (postCode.charAt(2) == '-')
@@ -195,6 +222,11 @@ public class AddressService extends AbstractService
         return postCode.substring(0, 2) + "-" + postCode.substring(2);
     }
 
+    /**
+     * Check if post code is correct
+     * @param postCode formatted post code
+     * @return true if post code is correct and false if post code isn't correct
+     */
     private boolean postCodeIsCorrect(String postCode)
     {
         if (postCode.length() == 6)
