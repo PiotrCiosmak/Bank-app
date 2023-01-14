@@ -2,6 +2,7 @@ package com.ciosmak.bankapp.service;
 
 import com.ciosmak.bankapp.entity.Address;
 import com.ciosmak.bankapp.entity.User;
+import com.ciosmak.bankapp.exception.FatalError;
 import com.ciosmak.bankapp.repository.UserRepository;
 import com.ciosmak.bankapp.user.id.UserId;
 import lombok.RequiredArgsConstructor;
@@ -82,18 +83,30 @@ public class AddressService extends AbstractService
         String street;
         System.out.print("Podaj ulicę: ");
         street = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(street))
+        {
+            FatalError.exit();
+        }
         street = capitalizeFirstLetterOfEveryWord(street);
         address.setStreet(street);
 
         String houseNumber;
         System.out.print("Podaj numer domu: ");
         houseNumber = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(houseNumber))
+        {
+            FatalError.exit();
+        }
         houseNumber = convertAllLettersToUppercase(houseNumber);
         address.setHouseNumber(houseNumber);
 
         String apartmentNumber;
         System.out.print("Podaj numer mieszkania: ");
         apartmentNumber = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(apartmentNumber))
+        {
+            FatalError.exit();
+        }
         apartmentNumber = convertAllLettersToUppercase(apartmentNumber);
         address.setApartmentNumber(apartmentNumber);
 
@@ -119,12 +132,20 @@ public class AddressService extends AbstractService
         String town;
         System.out.print("Podaj miejscowość: ");
         town = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(town))
+        {
+            FatalError.exit();
+        }
         town = capitalizeFirstLetterOfEveryWord(town);
         address.setTown(town);
 
         String country;
         System.out.print("Podaj kraj: ");
         country = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(country))
+        {
+            FatalError.exit();
+        }
         country = capitalizeFirstLetterOfEveryWord(country);
         address.setCountry(country);
 

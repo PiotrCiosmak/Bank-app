@@ -69,6 +69,10 @@ public class PersonalDataService extends AbstractService
                         String firstName;
                         System.out.print("Podaj imie: ");
                         firstName = scanner.nextLine();
+                        if(!checkIfVarcharLengthIsCorrect(firstName))
+                        {
+                            FatalError.exit();
+                        }
                         firstName = capitalizeFirstLetterOfEveryWord(firstName);
                         user.getPersonalData().setFirstName(firstName);
                         System.out.println("Imie został zaktualizowane.");
@@ -79,6 +83,10 @@ public class PersonalDataService extends AbstractService
                         String lastName;
                         System.out.print("Podaj nazwisko: ");
                         lastName = scanner.nextLine();
+                        if(!checkIfVarcharLengthIsCorrect(lastName))
+                        {
+                            FatalError.exit();
+                        }
                         lastName = capitalizeFirstLetterOfEveryWord(lastName);
                         user.getPersonalData().setLastName(lastName);
                         System.out.println("Nazwisko został zaktualizowane.");
@@ -115,12 +123,20 @@ public class PersonalDataService extends AbstractService
         String firstName;
         System.out.print("Podaj imie: ");
         firstName = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(firstName))
+        {
+            FatalError.exit();
+        }
         firstName = capitalizeFirstLetterOfEveryWord(firstName);
         personalData.setFirstName(firstName);
 
         String lastName;
         System.out.print("Podaj nazwisko: ");
         lastName = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(lastName))
+        {
+            FatalError.exit();
+        }
         lastName = capitalizeFirstLetterOfEveryWord(lastName);
         personalData.setLastName(lastName);
 
@@ -146,6 +162,10 @@ public class PersonalDataService extends AbstractService
         String familyName;
         System.out.print("Podaj nazwisko rodowe: ");
         familyName = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(familyName))
+        {
+            FatalError.exit();
+        }
         familyName = capitalizeFirstLetterOfEveryWord(familyName);
         personalData.setFamilyName(familyName);
 
@@ -176,24 +196,40 @@ public class PersonalDataService extends AbstractService
         String birthPlace;
         System.out.print("Podaj miejsce urodzenia: ");
         birthPlace = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(birthPlace))
+        {
+            FatalError.exit();
+        }
         birthPlace = capitalizeFirstLetterOfEveryWord(birthPlace);
         personalData.setBirthPlace(birthPlace);
 
         String nationality;
         System.out.print("Podaj narodowość: ");
         nationality = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(nationality))
+        {
+            FatalError.exit();
+        }
         nationality = capitalizeFirstLetterOfEveryWord(nationality);
         personalData.setNationality(nationality);
 
         String mothersName;
         System.out.print("Podaj nazwisko matki: ");
         mothersName = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(mothersName))
+        {
+            FatalError.exit();
+        }
         mothersName = capitalizeFirstLetterOfEveryWord(mothersName);
         personalData.setMothersName(mothersName);
 
         String mothersMaidenName;
         System.out.print("Podaj nazwisko paniejskie matki: ");
         mothersMaidenName = scanner.nextLine();
+        if(!checkIfVarcharLengthIsCorrect(mothersMaidenName))
+        {
+            FatalError.exit();
+        }
         mothersMaidenName = capitalizeFirstLetterOfEveryWord(mothersMaidenName);
         personalData.setMothersMaidenName(mothersMaidenName);
         return personalData;
