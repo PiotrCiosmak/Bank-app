@@ -83,7 +83,7 @@ public class AddressService extends AbstractService
         String street;
         System.out.print("Podaj ulicę: ");
         street = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(street))
+        if(checkIfVarcharLengthIsNotCorrect(street))
         {
             FatalError.exit();
         }
@@ -93,7 +93,7 @@ public class AddressService extends AbstractService
         String houseNumber;
         System.out.print("Podaj numer domu: ");
         houseNumber = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(houseNumber))
+        if(checkIfVarcharLengthIsNotCorrect(houseNumber))
         {
             FatalError.exit();
         }
@@ -103,7 +103,7 @@ public class AddressService extends AbstractService
         String apartmentNumber;
         System.out.print("Podaj numer mieszkania: ");
         apartmentNumber = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(apartmentNumber))
+        if(checkIfVarcharLengthIsNotCorrect(apartmentNumber))
         {
             FatalError.exit();
         }
@@ -132,7 +132,7 @@ public class AddressService extends AbstractService
         String town;
         System.out.print("Podaj miejscowość: ");
         town = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(town))
+        if(checkIfVarcharLengthIsNotCorrect(town))
         {
             FatalError.exit();
         }
@@ -142,7 +142,7 @@ public class AddressService extends AbstractService
         String country;
         System.out.print("Podaj kraj: ");
         country = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(country))
+        if(checkIfVarcharLengthIsNotCorrect(country))
         {
             FatalError.exit();
         }

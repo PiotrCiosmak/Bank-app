@@ -69,7 +69,7 @@ public class PersonalDataService extends AbstractService
                         String firstName;
                         System.out.print("Podaj imie: ");
                         firstName = scanner.nextLine();
-                        if(!checkIfVarcharLengthIsCorrect(firstName))
+                        if(checkIfVarcharLengthIsNotCorrect(firstName))
                         {
                             FatalError.exit();
                         }
@@ -83,7 +83,7 @@ public class PersonalDataService extends AbstractService
                         String lastName;
                         System.out.print("Podaj nazwisko: ");
                         lastName = scanner.nextLine();
-                        if(!checkIfVarcharLengthIsCorrect(lastName))
+                        if(checkIfVarcharLengthIsNotCorrect(lastName))
                         {
                             FatalError.exit();
                         }
@@ -123,7 +123,7 @@ public class PersonalDataService extends AbstractService
         String firstName;
         System.out.print("Podaj imie: ");
         firstName = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(firstName))
+        if(checkIfVarcharLengthIsNotCorrect(firstName))
         {
             FatalError.exit();
         }
@@ -133,7 +133,7 @@ public class PersonalDataService extends AbstractService
         String lastName;
         System.out.print("Podaj nazwisko: ");
         lastName = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(lastName))
+        if(checkIfVarcharLengthIsNotCorrect(lastName))
         {
             FatalError.exit();
         }
@@ -162,7 +162,7 @@ public class PersonalDataService extends AbstractService
         String familyName;
         System.out.print("Podaj nazwisko rodowe: ");
         familyName = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(familyName))
+        if(checkIfVarcharLengthIsNotCorrect(familyName))
         {
             FatalError.exit();
         }
@@ -196,7 +196,7 @@ public class PersonalDataService extends AbstractService
         String birthPlace;
         System.out.print("Podaj miejsce urodzenia: ");
         birthPlace = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(birthPlace))
+        if(checkIfVarcharLengthIsNotCorrect(birthPlace))
         {
             FatalError.exit();
         }
@@ -206,7 +206,7 @@ public class PersonalDataService extends AbstractService
         String nationality;
         System.out.print("Podaj narodowość: ");
         nationality = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(nationality))
+        if(checkIfVarcharLengthIsNotCorrect(nationality))
         {
             FatalError.exit();
         }
@@ -216,7 +216,7 @@ public class PersonalDataService extends AbstractService
         String mothersName;
         System.out.print("Podaj nazwisko matki: ");
         mothersName = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(mothersName))
+        if(checkIfVarcharLengthIsNotCorrect(mothersName))
         {
             FatalError.exit();
         }
@@ -226,7 +226,7 @@ public class PersonalDataService extends AbstractService
         String mothersMaidenName;
         System.out.print("Podaj nazwisko paniejskie matki: ");
         mothersMaidenName = scanner.nextLine();
-        if(!checkIfVarcharLengthIsCorrect(mothersMaidenName))
+        if(checkIfVarcharLengthIsNotCorrect(mothersMaidenName))
         {
             FatalError.exit();
         }

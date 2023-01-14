@@ -100,9 +100,9 @@ public class AbstractService
         return selectedProduct >= 0 && selectedProduct < numberOfProducts;
     }
 
-    protected boolean checkIfVarcharLengthIsCorrect(String text)
+    protected boolean checkIfVarcharLengthIsNotCorrect(String text)
     {
-        return text.length() < 255;
+        return text.length() >= 255;
     }
 
     protected boolean numberIsTooLong(BigDecimal number)
