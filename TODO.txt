@@ -1,4 +1,4 @@
-1. Java doc
+1. Java doc chatgpt
 2. UML
 3. Testy jednostkowe
 4. Naprawić sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)

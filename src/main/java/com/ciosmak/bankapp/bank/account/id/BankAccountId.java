@@ -10,7 +10,7 @@ package com.ciosmak.bankapp.bank.account.id;
  * <p> The class has methods for setting and getting the ID, and the ID is stored as a private variable.
  * The constructor is private, so the class can only be instantiated within the class.
  *
- * @author  Author Piotr Ciosmak
+ * @author Author Piotr Ciosmak
  * @version 1.0
  */
 public final class BankAccountId
@@ -57,7 +57,7 @@ public final class BankAccountId
     public Long id;
 
     /**
-     *  Constructor is private, so the class can only be instantiated within the class.
+     * Constructor is private, so the class can only be instantiated within the class.
      *
      * @param id the id of bank account
      */
