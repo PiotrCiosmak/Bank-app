@@ -11,12 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
+/**
+ * Service class representing the "Activated" state of the PaymentCardStatus enum.
+ * Provide implementation for the showPaymentCard and changeLimits methods defined in PaymentCardStatus interface.
+ *
+ * @author Author Piotr Ciosmak
+ * @version 1.0
+ * @see AbstractPaymentCardService
+ * @see PaymentCardStatus
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class Activated extends AbstractPaymentCardService implements PaymentCardStatus
 {
+    /**
+     * Displays the details of the PaymentCard object
+     *
+     * @param paymentCardId         the id of the PaymentCard object to be displayed
+     * @param paymentCardRepository the repository used to retrieve the PaymentCard object
+     */
     @Override
     public void showPaymentCard(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -77,6 +92,12 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         System.out.println("Limit balansu debetowego: " + paymentCard.getMaxDebt());
     }
 
+    /**
+     * Changes the limits (e.g. payment limit per day, withdraw limit per day) of a PaymentCard object.
+     *
+     * @param paymentCardId         the id of the PaymentCard object to be changed
+     * @param paymentCardRepository the repository used to retrieve the PaymentCard object
+     */
     @Override
     public void changeLimits(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -87,6 +108,12 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         paymentCard.setInternetTransactionLimitPerDay(setLimitPerDay("Podaj nowy dzienny limit płatności w internecie: "));
     }
 
+    /**
+     * Blocks a PaymentCard temporarily.
+     *
+     * @param paymentCardId         The id of the PaymentCard object to be blocked.
+     * @param paymentCardRepository The repository used to retrieve the PaymentCard object.
+     */
     @Override
     public void blockTemporarily(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -96,12 +123,24 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         System.out.println("\n---KARTA ZOSTAŁA ZABLOKOWANA TYMCZASOWO---");
     }
 
+    /**
+     * Unlocks a PaymentCard if it is temporarily blocked.
+     *
+     * @param paymentCardId         The id of the PaymentCard object to be unlocked.
+     * @param paymentCardRepository The repository used to retrieve the PaymentCard object.
+     */
     @Override
     public void unlock(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
         System.out.println("\n---KARTA NIE JEST ZABLOKOWANA---");
     }
 
+    /**
+     * Blocks a PaymentCard permanently.
+     *
+     * @param paymentCardId         The id of the PaymentCard object to be blocked.
+     * @param paymentCardRepository The repository used to retrieve the PaymentCard object.
+     */
     @Override
     public void blockPermanently(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -111,6 +150,12 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         System.out.println("\n---KARTA ZOSTAŁA ZABLKOWANA PERNAMETNIE---");
     }
 
+    /**
+     * Changes the PIN of a PaymentCard.
+     *
+     * @param paymentCardId         The id of the PaymentCard object whose PIN will be changed.
+     * @param paymentCardRepository The repository used to retrieve the PaymentCard object.
+     */
     @Override
     public void changePin(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -119,6 +164,13 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         paymentCard.setPin(preparePin());
     }
 
+    /**
+     * Method used to change the contactless transaction option for a specific payment card.
+     * If contactless transactions are currently enabled for the given card, they will be disabled, and vice versa.
+     *
+     * @param paymentCardId         the id of the payment card for which we want to change the contactless transaction option
+     * @param paymentCardRepository the repository of payment cards where we will search for the card with the given id
+     */
     @Override
     public void changeContactlessTransactionOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -136,6 +188,13 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         }
     }
 
+    /**
+     * Method used to change the magnetic strip option for a specific payment card.
+     * If magnetic strip is currently enabled for the given card, it will be disabled, and vice versa.
+     *
+     * @param paymentCardId         the id of the payment card for which we want to change the magnetic strip option
+     * @param paymentCardRepository the repository of payment cards where we will search for the card with the given id
+     */
     @Override
     public void changeMagneticStripOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -153,6 +212,13 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         }
     }
 
+    /**
+     * Method used to change the option for transactions with DDC service for a specific payment card.
+     * If transactions with DDC service are currently enabled for the given card, they will be disabled, and vice versa.
+     *
+     * @param paymentCardId         the id of the payment card for which we want to change the option for transactions with DDC service
+     * @param paymentCardRepository the repository of payment cards where we will search for the card with the given id
+     */
     @Override
     public void changeTransactionsWithDdcServiceOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -170,6 +236,13 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         }
     }
 
+    /**
+     * Method used to change the option for surcharge transactions for a specific payment card.
+     * If surcharge transactions are currently enabled for the given card, they will be disabled, and vice versa.
+     *
+     * @param paymentCardId         the id of the payment card for which we want to change the option for surcharge transactions
+     * @param paymentCardRepository the repository of payment cards where we will search for the card with the given id
+     */
     @Override
     public void changeSurchargeTransactionsOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
@@ -187,6 +260,13 @@ public class Activated extends AbstractPaymentCardService implements PaymentCard
         }
     }
 
+    /**
+     * Method used to change the option for debit balance for a specific payment card.
+     * If debit balance is currently enabled for the given card, it will be disabled and set to zero, and vice versa.
+     *
+     * @param paymentCardId         the id of the payment card for which we want to change the option for debit balance
+     * @param paymentCardRepository the repository of payment cards where we will search for the card with the given id
+     */
     @Override
     public void changeDebitOption(PaymentCardId paymentCardId, PaymentCardRepository paymentCardRepository)
     {
