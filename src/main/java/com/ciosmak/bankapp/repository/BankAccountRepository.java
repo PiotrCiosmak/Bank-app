@@ -12,7 +12,7 @@ import java.util.Optional;
  * In addition to the standard CRUD operations, this interface also provides methods for finding a bank account by its unique id, bank account number, or user id.
  * This interface also enables the use of Spring Data specific methods for querying the database.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  * @see JpaRepository
  * @see BankAccount

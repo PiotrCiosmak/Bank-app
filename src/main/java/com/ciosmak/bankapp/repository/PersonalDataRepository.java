@@ -10,7 +10,7 @@ import java.util.Optional;
  * It extends the {@link JpaRepository} interface and provides methods for common CRUD operations on identity documents.
  * This interface also enables the use of Spring Data specific methods for querying the database.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  * @see JpaRepository
  * @see PersonalData

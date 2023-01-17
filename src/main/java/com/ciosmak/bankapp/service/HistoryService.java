@@ -18,12 +18,25 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * This service is responsible for providing history-related functionalities such as getting expenses and income for current month, and showing the history of all transactions made by the user.
+ *
+ * @author Piotr Ciosmak
+ * @version 1.0
+ * @see AbstractService
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class HistoryService extends AbstractService
 {
+    /**
+     * Returns the total expenses made by the user for the current month.
+     *
+     * @param userId The user's unique identifier.
+     * @return The total expenses made by the user for the current month.
+     */
     public BigDecimal getExpensesForCurrentMonth(UserId userId)
     {
         ArrayList<Transfer> transfersList = getAllSenderTransfersByUserId(userId);
@@ -40,6 +53,12 @@ public class HistoryService extends AbstractService
         return expensesForCurrentMonth;
     }
 
+    /**
+     * Returns the total amount of money received by the user in the current month
+     *
+     * @param userId The ID of the user
+     * @return The total amount of money received by the user in the current month
+     */
     public BigDecimal getIncomeForCurrentMonth(UserId userId)
     {
         ArrayList<Transfer> transfersList = getAllReceivingTransfersByUserId(userId);
@@ -56,6 +75,15 @@ public class HistoryService extends AbstractService
         return expensesForCurrentMonth;
     }
 
+    /**
+     * The {@code showHistory} method is used to display the transaction history for a specific user.
+     * The method takes in a {@code UserId} object as a parameter and retrieves all bank accounts associated with that user.
+     * The user is then prompted to select a specific bank account to view the transaction history for, or can choose to view the history for all accounts.
+     * The method then retrieves all transactions associated with the selected bank account(s) and displays them in a formatted manner, including the transaction title, amount, date, and destination account information.
+     * If there are no transactions found for the selected bank account(s), the method will display a message indicating that there are no transactions.
+     *
+     * @param userId a UserId object representing the user whose transaction history is to be displayed
+     */
     public void showHistory(UserId userId)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
@@ -148,6 +176,13 @@ public class HistoryService extends AbstractService
         }
     }
 
+    /**
+     * The showLastFiveTransactions method retrieves a list of bank accounts associated with the provided user ID,
+     * and then retrieves a list of transfers associated with each account. It then iterates through the list of transfers,
+     * prints the details of the last five transactions and stops iterating when it reaches the fifth transaction.
+     *
+     * @param userId UserId - user ID associated with the bank account.
+     */
     public void showLastFiveTransactions(UserId userId)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
@@ -199,6 +234,12 @@ public class HistoryService extends AbstractService
         }
     }
 
+    /**
+     * Retrieves all the transfers where the user with the given userId is the sender.
+     *
+     * @param userId the userId of the user whose transfers are to be retrieved
+     * @return a list of transfers where the user with the given userId is the sender
+     */
     private ArrayList<Transfer> getAllSenderTransfersByUserId(UserId userId)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
@@ -210,6 +251,13 @@ public class HistoryService extends AbstractService
         return transfersList;
     }
 
+    /**
+     * Retrieves all the transfers where the given user's bank accounts are the receiving accounts.
+     * Only the transfers that are marked as done are added to the list.
+     *
+     * @param userId the id of the user
+     * @return a list of done transfers where the user's bank accounts are the receiving accounts
+     */
     private ArrayList<Transfer> getAllReceivingTransfersByUserId(UserId userId)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
@@ -232,6 +280,12 @@ public class HistoryService extends AbstractService
         return transfersList;
     }
 
+    /**
+     * Allows the user to choose one bank account from a list of bank accounts.
+     *
+     * @param bankAccountsList the list of bank accounts from which the user can choose
+     * @return the id of the selected bank account or 0 if "all" bank accounts were selected
+     */
     private Long chooseOneBankAccount(ArrayList<BankAccount> bankAccountsList)
     {
         int amountOfBankAccounts = bankAccountsList.size();
@@ -277,6 +331,13 @@ public class HistoryService extends AbstractService
         }
     }
 
+    /**
+     * bankAccountRepository is an instance variable of type BankAccountRepository, used to access and manipulate bank account data in the database.
+     */
     private final BankAccountRepository bankAccountRepository;
+
+    /**
+     * transferRepository is an instance variable of type TransferRepository, used to access and manipulate transfer data in the database.
+     */
     private final TransferRepository transferRepository;
 }

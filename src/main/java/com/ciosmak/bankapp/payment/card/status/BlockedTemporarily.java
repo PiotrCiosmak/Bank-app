@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The class extends the AbstractPaymentCardService and implements the PaymentCardStatus interface.
  * This class defines the behavior and functionality when a payment card is temporarily blocked
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  * @see AbstractPaymentCardService
  * @see PaymentCardStatus

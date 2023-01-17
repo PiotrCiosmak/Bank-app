@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.exception;
 /**
  * Represents an exception for an illegal debt amount.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public class IllegalDebtAmountException extends AbstractException

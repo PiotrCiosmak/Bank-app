@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.exception;
 /**
  * Represents an exception for an invalid date.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public class InvalidDateException extends AbstractException

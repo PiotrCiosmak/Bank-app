@@ -11,7 +11,7 @@ import com.ciosmak.bankapp.service.AbstractPaymentCardService;
  * changing the contactless transaction option, changing the magnetic strip option, changing the option for transactions with DDC (Dynamic Currency Conversion) service,
  * changing the option for surcharged transactions, and changing the option for debit transactions.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public interface PaymentCardStatus

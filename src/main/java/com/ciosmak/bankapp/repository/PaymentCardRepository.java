@@ -12,7 +12,7 @@ import java.util.Optional;
  * In addition to the standard CRUD operations, this interface also provides methods for finding a payment card by its unique id, or card number.
  * This interface also enables the use of Spring Data specific methods for querying the database.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  * @see JpaRepository
  * @see PaymentCard

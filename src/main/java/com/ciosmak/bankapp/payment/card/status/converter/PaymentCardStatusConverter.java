@@ -9,7 +9,7 @@ import jakarta.persistence.Converter;
  * The convertToDatabaseColumn method is used to convert a PaymentCardStatus attribute to a String representation in the database.
  * The convertToEntityAttribute method is used to convert a String representation of the PaymentCardStatus in the database to the corresponding PaymentCardStatus enum.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 @Converter

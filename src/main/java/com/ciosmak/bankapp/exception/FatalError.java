@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.exception;
 /**
  * Represents a fatal error in the program.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public class FatalError

@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.exception;
 /**
  * Represents an exception for an incorrect bank account.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public class IncorrectBankAccountException extends AbstractException

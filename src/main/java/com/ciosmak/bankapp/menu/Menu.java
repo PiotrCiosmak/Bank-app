@@ -15,7 +15,7 @@ import java.util.Scanner;
  * It provides methods for displaying the login menu, main menu and other menus such as payment menu, products, settings.
  * It also provides methods for handling exceptions and calling services for performing actions on data.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public class Menu

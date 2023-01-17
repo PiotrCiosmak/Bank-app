@@ -18,7 +18,7 @@ import java.util.Random;
  * If the entered PIN is correct, the status of the payment card is set to Activated and a message is displayed indicating that the card has been activated.
  * If the entered PIN is incorrect, the user is prompted to enter the PIN again until it is correct.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  * @see AbstractPaymentCardService
  * @see PaymentCardStatus

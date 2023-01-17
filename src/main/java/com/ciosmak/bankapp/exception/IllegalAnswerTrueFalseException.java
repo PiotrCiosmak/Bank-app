@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.exception;
 /**
  * Represents an exception for an illegal answer to a true/false question.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public class IllegalAnswerTrueFalseException extends AbstractException

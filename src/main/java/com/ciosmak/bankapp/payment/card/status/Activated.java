@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  * Service class representing the "Activated" state of the PaymentCardStatus enum.
  * Provide implementation for the showPaymentCard and changeLimits methods defined in PaymentCardStatus interface.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  * @see AbstractPaymentCardService
  * @see PaymentCardStatus

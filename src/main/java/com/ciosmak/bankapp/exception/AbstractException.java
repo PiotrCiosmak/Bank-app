@@ -3,7 +3,7 @@ package com.ciosmak.bankapp.exception;
 /**
  * Abstract class for creating custom exceptions.
  *
- * @author Author Piotr Ciosmak
+ * @author Piotr Ciosmak
  * @version 1.0
  */
 public abstract class AbstractException extends Exception
