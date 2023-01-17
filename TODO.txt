@@ -1,4 +1,3 @@
-1. UML
-2. Testy jednostkowe
-3. Naprawić sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
-4. Dodać opis do CV
+1. Testy jednostkowe
+2. Naprawić sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
+3. Dodać opis do CV
