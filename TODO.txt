@@ -1,6 +1,1 @@
 sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
-
-POZA KODEM:
-Dla każdej funkcji, klasy itd. napisac dokumentację
-Zrobić testy jednostkowe
-Zrobić diagram UML
