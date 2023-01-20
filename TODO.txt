@@ -1,1 +1,0 @@
-sortownie historii po dacie (w głównej jak i w ostatnich 5 transakcjach)
