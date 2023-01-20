@@ -115,7 +115,7 @@ public class Menu
         System.out.println("Ilość aktywnych rachunków: " + bankAccountService.getNumberOfOpenBankAccounts(userId));
         System.out.println("Ilość aktywnych kart płatniczych: " + paymentCardService.getNumberOfNoPermanentlyBlockedPaymentCards(userId));
         System.out.println("---NAJNOWSZA HISTORIA---");
-        historyService.showLastFiveTransactions(userId);
+        historyService.showHistory(userId, Integer.valueOf(5));
         int selectedOption;
         while (true)
         {
@@ -130,7 +130,7 @@ public class Menu
                 {
                     case 1 ->
                     {
-                        historyService.showHistory(userId);
+                        historyService.showHistory(userId, Integer.MAX_VALUE);
                         return;
                     }
                     case 2 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
@@ -171,7 +171,7 @@ public class Menu
                 switch (selectedOption)
                 {
                     case 1 -> transferService.create(userId);
-                    case 2 -> historyService.showHistory(userId);
+                    case 2 -> historyService.showHistory(userId, Integer.MAX_VALUE);
                     case 3 -> mainMenu(userService, personalDataService, addressService, identityDocumentService, bankAccountService, paymentCardService, transferService, historyService);
                     default -> throw new IllegalOptionSelectedException("Nie ma takiej opcji.\nSpróbuj ponownie.\n", "");
                 }

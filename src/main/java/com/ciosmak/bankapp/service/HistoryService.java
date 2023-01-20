@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -56,16 +57,26 @@ public class HistoryService extends AbstractService
         return expensesForCurrentMonth;
     }
 
-    public void showHistory(UserId userId)
+    public void showHistory(UserId userId, int numberOfRecords)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
         ArrayList<Transfer> transfersList;
+        ArrayList<LocalDateTime> dates = new ArrayList<>();
+        ArrayList<String> destinationBankAccountsInfo = new ArrayList<>();
         char sign;
         String data;
         String destinationBankAccountInfo = "";
         Optional<BankAccount> destinationBankAccount;
 
-        Long selectedBankAccountId = chooseOneBankAccount(bankAccountsList);
+        Long selectedBankAccountId;
+        if (numberOfRecords == Integer.MAX_VALUE)
+        {
+            selectedBankAccountId = chooseOneBankAccount(bankAccountsList);
+        }
+        else
+        {
+            selectedBankAccountId = 0L;
+        }
         if (selectedBankAccountId == 0L)
         {
             boolean transferListIsEmpty = true;
@@ -80,6 +91,7 @@ public class HistoryService extends AbstractService
                         sign = '-';
                         data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
                         destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.getName();
+                        dates.add(transfer.getPostingDate());
                     }
                     else
                     {
@@ -89,13 +101,14 @@ public class HistoryService extends AbstractService
                         if (destinationBankAccount.isPresent())
                         {
                             destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                            dates.add(transfer.getPostingDate());
                         }
                         else
                         {
                             FatalError.exit();
                         }
                     }
-                    System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                    destinationBankAccountsInfo.add(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
                 }
             }
             if (transferListIsEmpty)
@@ -118,6 +131,7 @@ public class HistoryService extends AbstractService
                             sign = '-';
                             data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
                             destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.get().getName();
+                            dates.add(transfer.getPostingDate());
                         }
                         else
                         {
@@ -127,13 +141,14 @@ public class HistoryService extends AbstractService
                             if (destinationBankAccount.isPresent())
                             {
                                 destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                                dates.add(transfer.getPostingDate());
                             }
                             else
                             {
                                 FatalError.exit();
                             }
                         }
-                        System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                        destinationBankAccountsInfo.add((String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo));
                     }
                 }
                 else
@@ -146,56 +161,29 @@ public class HistoryService extends AbstractService
                 FatalError.exit();
             }
         }
-    }
-
-    public void showLastFiveTransactions(UserId userId)
-    {
-        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
-        ArrayList<Transfer> transfersList;
-        char sign;
-        String data;
-        String destinationBankAccountInfo = "";
-        Optional<BankAccount> destinationBankAccount;
-        int counter = 0;
-
-        boolean transferListIsEmpty = true;
-        for (var bankAccount : bankAccountsList)
+        if (dates.isEmpty())
         {
-            transfersList = transferRepository.findByBankAccountsIdOrReceivingBankAccountNumber(bankAccount.getId(), bankAccount.getBankAccountNumber());
-            for (var transfer : transfersList)
-            {
-                if (counter == 5)
-                {
-                    return;
-                }
-                transferListIsEmpty = false;
-                if (transfer.getSenderBankAccountNumber().equals(bankAccount.getBankAccountNumber()))
-                {
-                    sign = '-';
-                    data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
-                    destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.getName();
-                }
-                else
-                {
-                    sign = '+';
-                    data = Integer.toString(transfer.getPostingDate().getDayOfMonth()) + '.' + transfer.getPostingDate().getMonthValue() + '.' + transfer.getPostingDate().getYear();
-                    destinationBankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
-                    if (destinationBankAccount.isPresent())
-                    {
-                        destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
-                    }
-                    else
-                    {
-                        FatalError.exit();
-                    }
-                }
-                System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
-                counter++;
-            }
+            return;
         }
-        if (transferListIsEmpty)
+
+        ArrayList<ArrayList<Object>> dateAndInfo = new ArrayList<>();
+        for (int i = 0; i < dates.size(); ++i)
         {
-            System.out.println("Brak transakcji");
+            ArrayList<Object> list = new ArrayList<>();
+            list.add(dates.get(i));
+            list.add(destinationBankAccountsInfo.get(i));
+            dateAndInfo.add(list);
+        }
+
+        Collections.sort(dateAndInfo, (o1, o2) -> ((LocalDateTime) o2.get(0)).compareTo((LocalDateTime) o1.get(0)));
+
+        for (int i = 0; i < dateAndInfo.size(); ++i)
+        {
+            if (i == numberOfRecords)
+            {
+                break;
+            }
+            System.out.println(dateAndInfo.get(i).get(1));
         }
     }
 
@@ -261,7 +249,7 @@ public class HistoryService extends AbstractService
                 }
                 else
                 {
-                    throw new IncorrectBankAccountException("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + amountOfBankAccounts + ".\nSpróbuj ponownie.\n", "");
+                    throw new IncorrectBankAccountException("Nie ma takiej opcji.\nNależy wprowadzić liczbę od 1 do " + (amountOfBankAccounts + 1) + ".\nSpróbuj ponownie.\n", "");
                 }
 
             }
