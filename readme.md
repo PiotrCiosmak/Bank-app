@@ -18,6 +18,7 @@ In this application you can create your account, open a bank account along with 
 - Lombok 1.18.24
 - Maven
 - H2 Database
+- JUnit 5
 - Git
 - Github
 
