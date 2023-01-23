@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -83,17 +84,28 @@ public class HistoryService extends AbstractService
      * If there are no transactions found for the selected bank account(s), the method will display a message indicating that there are no transactions.
      *
      * @param userId a UserId object representing the user whose transaction history is to be displayed
+     * @param numberOfRecords a number of record to show
      */
-    public void showHistory(UserId userId)
+    public void showHistory(UserId userId, int numberOfRecords)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
         ArrayList<Transfer> transfersList;
+        ArrayList<LocalDateTime> dates = new ArrayList<>();
+        ArrayList<String> destinationBankAccountsInfo = new ArrayList<>();
         char sign;
         String data;
         String destinationBankAccountInfo = "";
         Optional<BankAccount> destinationBankAccount;
 
-        Long selectedBankAccountId = chooseOneBankAccount(bankAccountsList);
+        Long selectedBankAccountId;
+        if (numberOfRecords == Integer.MAX_VALUE)
+        {
+            selectedBankAccountId = chooseOneBankAccount(bankAccountsList);
+        }
+        else
+        {
+            selectedBankAccountId = 0L;
+        }
         if (selectedBankAccountId == 0L)
         {
             boolean transferListIsEmpty = true;
@@ -108,6 +120,7 @@ public class HistoryService extends AbstractService
                         sign = '-';
                         data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
                         destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.getName();
+                        dates.add(transfer.getPostingDate());
                     }
                     else
                     {
@@ -117,13 +130,14 @@ public class HistoryService extends AbstractService
                         if (destinationBankAccount.isPresent())
                         {
                             destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                            dates.add(transfer.getPostingDate());
                         }
                         else
                         {
                             FatalError.exit();
                         }
                     }
-                    System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                    destinationBankAccountsInfo.add(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
                 }
             }
             if (transferListIsEmpty)
@@ -146,6 +160,7 @@ public class HistoryService extends AbstractService
                             sign = '-';
                             data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
                             destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.get().getName();
+                            dates.add(transfer.getPostingDate());
                         }
                         else
                         {
@@ -155,13 +170,14 @@ public class HistoryService extends AbstractService
                             if (destinationBankAccount.isPresent())
                             {
                                 destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                                dates.add(transfer.getPostingDate());
                             }
                             else
                             {
                                 FatalError.exit();
                             }
                         }
-                        System.out.println(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                        destinationBankAccountsInfo.add((String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo));
                     }
                 }
                 else
@@ -173,6 +189,30 @@ public class HistoryService extends AbstractService
             {
                 FatalError.exit();
             }
+        }
+        if (dates.isEmpty())
+        {
+            return;
+        }
+
+        ArrayList<ArrayList<Object>> dateAndInfo = new ArrayList<>();
+        for (int i = 0; i < dates.size(); ++i)
+        {
+            ArrayList<Object> list = new ArrayList<>();
+            list.add(dates.get(i));
+            list.add(destinationBankAccountsInfo.get(i));
+            dateAndInfo.add(list);
+        }
+
+        Collections.sort(dateAndInfo, (o1, o2) -> ((LocalDateTime) o2.get(0)).compareTo((LocalDateTime) o1.get(0)));
+
+        for (int i = 0; i < dateAndInfo.size(); ++i)
+        {
+            if (i == numberOfRecords)
+            {
+                break;
+            }
+            System.out.println(dateAndInfo.get(i).get(1));
         }
     }
 
