@@ -57,7 +57,135 @@ public class HistoryService extends AbstractService
         return expensesForCurrentMonth;
     }
 
+    public void showHistory(UserId userId, int numberOfRecords)
+    {
+        ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
+        ArrayList<Transfer> transfersList;
+        ArrayList<LocalDateTime> dates = new ArrayList<>();
+        ArrayList<String> destinationBankAccountsInfo = new ArrayList<>();
+        char sign;
+        String data;
+        String destinationBankAccountInfo = "";
+        Optional<BankAccount> destinationBankAccount;
 
+        Long selectedBankAccountId;
+        if (numberOfRecords == Integer.MAX_VALUE)
+        {
+            selectedBankAccountId = chooseOneBankAccount(bankAccountsList);
+        }
+        else
+        {
+            selectedBankAccountId = 0L;
+        }
+        if (selectedBankAccountId == 0L)
+        {
+            boolean transferListIsEmpty = true;
+            for (var bankAccount : bankAccountsList)
+            {
+                transfersList = transferRepository.findByBankAccountsIdOrReceivingBankAccountNumber(bankAccount.getId(), bankAccount.getBankAccountNumber());
+                for (var transfer : transfersList)
+                {
+                    transferListIsEmpty = false;
+                    if (transfer.getSenderBankAccountNumber().equals(bankAccount.getBankAccountNumber()))
+                    {
+                        sign = '-';
+                        data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
+                        destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.getName();
+                        dates.add(transfer.getPostingDate());
+                    }
+                    else
+                    {
+                        sign = '+';
+                        data = Integer.toString(transfer.getPostingDate().getDayOfMonth()) + '.' + transfer.getPostingDate().getMonthValue() + '.' + transfer.getPostingDate().getYear();
+                        destinationBankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
+                        if (destinationBankAccount.isPresent())
+                        {
+                            destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                            dates.add(transfer.getPostingDate());
+                        }
+                        else
+                        {
+                            FatalError.exit();
+                        }
+                    }
+                    destinationBankAccountsInfo.add(String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo);
+                }
+            }
+            if (transferListIsEmpty)
+            {
+                System.out.println("Brak transakcji");
+            }
+        }
+        else
+        {
+            Optional<BankAccount> bankAccount = bankAccountRepository.findById(selectedBankAccountId);
+            if (bankAccount.isPresent())
+            {
+                transfersList = transferRepository.findByBankAccountsIdOrReceivingBankAccountNumber(bankAccount.get().getId(), bankAccount.get().getBankAccountNumber());
+                if (!transfersList.isEmpty())
+                {
+                    for (var transfer : transfersList)
+                    {
+                        if (transfer.getSenderBankAccountNumber().equals(bankAccount.get().getBankAccountNumber()))
+                        {
+                            sign = '-';
+                            data = Integer.toString(transfer.getExecutionDate().getDayOfMonth()) + '.' + transfer.getExecutionDate().getMonthValue() + '.' + transfer.getExecutionDate().getYear();
+                            destinationBankAccountInfo = "z rachunku o nazwie: " + bankAccount.get().getName();
+                            dates.add(transfer.getPostingDate());
+                        }
+                        else
+                        {
+                            sign = '+';
+                            data = Integer.toString(transfer.getPostingDate().getDayOfMonth()) + '.' + transfer.getPostingDate().getMonthValue() + '.' + transfer.getPostingDate().getYear();
+                            destinationBankAccount = bankAccountRepository.findByBankAccountNumber(transfer.getReceivingBankAccountNumber());
+                            if (destinationBankAccount.isPresent())
+                            {
+                                destinationBankAccountInfo = "na rachunek o nazwie: " + destinationBankAccount.get().getName();
+                                dates.add(transfer.getPostingDate());
+                            }
+                            else
+                            {
+                                FatalError.exit();
+                            }
+                        }
+                        destinationBankAccountsInfo.add((String.format("%1$-" + 30 + "s", transfer.getTitle()) + "\t" + sign + String.format("%1$-" + 15 + "s", transfer.getAmountOfMoney()) + "\t" + String.format("%1$-" + 10 + "s", data) + "\t" + destinationBankAccountInfo));
+                    }
+                }
+                else
+                {
+                    System.out.println("Brak transakcji");
+                }
+            }
+            else
+            {
+                FatalError.exit();
+            }
+        }
+        if (dates.isEmpty())
+        {
+            return;
+        }
+
+        ArrayList<ArrayList<Object>> dateAndInfo = new ArrayList<>();
+        for (int i = 0; i < dates.size(); ++i)
+        {
+            ArrayList<Object> list = new ArrayList<>();
+            list.add(dates.get(i));
+            list.add(destinationBankAccountsInfo.get(i));
+            dateAndInfo.add(list);
+        }
+
+        Collections.sort(dateAndInfo, (o1, o2) -> ((LocalDateTime) o2.get(0)).compareTo((LocalDateTime) o1.get(0)));
+
+        for (int i = 0; i < dateAndInfo.size(); ++i)
+        {
+            if (i == numberOfRecords)
+            {
+                break;
+            }
+            System.out.println(dateAndInfo.get(i).get(1));
+        }
+    }
 
     private ArrayList<Transfer> getAllSenderTransfersByUserId(UserId userId)
     {
