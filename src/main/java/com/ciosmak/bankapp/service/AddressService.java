@@ -13,18 +13,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * AddressService class provides functionality for changing and creating mailing addresses for a user.
+ *
+ * @author Piotr Ciosmak
+ * @version 1.0
+ * @see AbstractService
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
-/**
- * <h2>Actions on the user's address</h2>
- */
 public class AddressService extends AbstractService
 {
     /**
-     * Change existing address
-     * @param userId user id from database (singleton)
+     * Changes the existing address of a user.
+     *
+     * @param userId the id of the user whose address is to be changed
      */
     public void changeAddress(UserId userId)
     {
@@ -41,8 +46,9 @@ public class AddressService extends AbstractService
     }
 
     /**
-     * Create or change if exists the mailing address
-     * @param userId user id from database (singleton)
+     * Creates or changes the mailing address of a user.
+     *
+     * @param userId the id of the user whose mailing address is to be changed
      */
     public void changeMailingAddress(UserId userId)
     {
@@ -87,10 +93,11 @@ public class AddressService extends AbstractService
     }
 
     /**
-     * Create a new address
-     * @param label header displayed at the beginning
-     * @param isMailing information if this address isMailing
-     * @return created address
+     * createAddress method creates a new address for a user.
+     *
+     * @param label     message to be displayed
+     * @param isMailing is it mailing address or not
+     * @return the created address
      */
     Address createAddress(String label, boolean isMailing)
     {
@@ -100,7 +107,7 @@ public class AddressService extends AbstractService
         String street;
         System.out.print("Podaj ulicę: ");
         street = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(street))
+        if (checkIfVarcharLengthIsNotCorrect(street))
         {
             FatalError.exit();
         }
@@ -110,7 +117,7 @@ public class AddressService extends AbstractService
         String houseNumber;
         System.out.print("Podaj numer domu: ");
         houseNumber = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(houseNumber))
+        if (checkIfVarcharLengthIsNotCorrect(houseNumber))
         {
             FatalError.exit();
         }
@@ -120,7 +127,7 @@ public class AddressService extends AbstractService
         String apartmentNumber;
         System.out.print("Podaj numer mieszkania: ");
         apartmentNumber = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(apartmentNumber))
+        if (checkIfVarcharLengthIsNotCorrect(apartmentNumber))
         {
             FatalError.exit();
         }
@@ -149,7 +156,7 @@ public class AddressService extends AbstractService
         String town;
         System.out.print("Podaj miejscowość: ");
         town = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(town))
+        if (checkIfVarcharLengthIsNotCorrect(town))
         {
             FatalError.exit();
         }
@@ -159,7 +166,7 @@ public class AddressService extends AbstractService
         String country;
         System.out.print("Podaj kraj: ");
         country = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(country))
+        if (checkIfVarcharLengthIsNotCorrect(country))
         {
             FatalError.exit();
         }
@@ -171,9 +178,10 @@ public class AddressService extends AbstractService
     }
 
     /**
-     * Create a mailing address (using createAddress method)
-     * @param addresses User address list
-     * @return User address list with new mailing address
+     * createMailingAddress method creates a mailing address for a user.
+     *
+     * @param addresses arrayList of addresses
+     * @return the arrayList of addresses
      */
     ArrayList<Address> createMailingAddress(ArrayList<Address> addresses)
     {
@@ -209,9 +217,10 @@ public class AddressService extends AbstractService
     }
 
     /**
-     * Prepare post code format
-     * @param postCode user-entered post code
-     * @return formatted post code
+     * preparePostCode method prepares post code for address.
+     *
+     * @param postCode post code
+     * @return the prepared post code
      */
     private String preparePostCode(String postCode)
     {
@@ -223,9 +232,10 @@ public class AddressService extends AbstractService
     }
 
     /**
-     * Check if post code is correct
-     * @param postCode formatted post code
-     * @return true if post code is correct and false if post code isn't correct
+     * postCodeIsCorrect method checks if post code is correct.
+     *
+     * @param postCode post code
+     * @return true if post code is correct, false otherwise
      */
     private boolean postCodeIsCorrect(String postCode)
     {
@@ -247,5 +257,8 @@ public class AddressService extends AbstractService
         return false;
     }
 
+    /**
+     * userRepository is an instance variable of type UserRepository, used to access and manipulate user data in the database.
+     */
     private final UserRepository userRepository;
 }

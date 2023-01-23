@@ -15,12 +15,25 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * This class represents the service of Identity Document which is used to update or auto update the identity document of a user.
+ * It contains methods for updating and auto updating the identity document of a user.
+ *
+ * @author Piotr Ciosmak
+ * @version 1.0
+ * @see AbstractService
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class IdentityDocumentService extends AbstractService
 {
+    /**
+     * This method auto updates the identity document of a user if the expiry date of the document is before the current date.
+     *
+     * @param userId the id of the user whose identity document is to be auto updated.
+     */
     public void autoUpdateIdentityDocument(UserId userId)
     {
         User user = getUserById(userId, userRepository);
@@ -30,6 +43,13 @@ public class IdentityDocumentService extends AbstractService
         }
     }
 
+    /**
+     * This method updates the identity document of a user, it takes the release date, expiry date and series and number of the document as input.
+     *
+     * @param userId           the id of the user whose identity document is to be updated.
+     * @param titleLabel       label to be displayed as title of the update process
+     * @param descriptionLabel label to be displayed as description of the update process
+     */
     public void updateIdentityDocument(UserId userId, String titleLabel, String descriptionLabel)
     {
         User user = getUserById(userId, userRepository);
@@ -83,6 +103,12 @@ public class IdentityDocumentService extends AbstractService
         }
     }
 
+    /**
+     * The method creates a new IdentityDocument object and prompts the user to input the release date, expiry date, and series and number of the document.
+     * The release date and expiry date are calculated by adding 10 years to the release date, and the series and number must be 9 characters long, with the first 3 characters being letters and the next 6 being digits.
+     *
+     * @return A new IdentityDocument object with the user-specified release date, expiry date, and series and number.
+     */
     IdentityDocument createIdentityDocument()
     {
         IdentityDocument identityDocument = new IdentityDocument();
@@ -138,6 +164,12 @@ public class IdentityDocumentService extends AbstractService
         return identityDocument;
     }
 
+    /**
+     * The method checks if the series and number of the identity document is in the correct format (3 letters and 6 digits)
+     *
+     * @param seriesAndNumber The series and number of the identity document
+     * @return A boolean value indicating whether the series and number is in the correct format or not
+     */
     private boolean seriesAndNumberIsCorrect(String seriesAndNumber)
     {
         if (seriesAndNumber.length() == 9)
@@ -161,6 +193,11 @@ public class IdentityDocumentService extends AbstractService
         return false;
     }
 
+    /**
+     * This method creates a date input by the user.
+     *
+     * @return LocalDate - a date created by user.
+     */
     private LocalDate createDate()
     {
         while (true)
@@ -206,6 +243,14 @@ public class IdentityDocumentService extends AbstractService
         }
     }
 
+    /**
+     * The method checks if the date entered is a valid date.
+     *
+     * @param day   The day of the date to be checked.
+     * @param month The month of the date to be checked.
+     * @param year  The year of the date to be checked.
+     * @return true if date is correct, false otherwise.
+     */
     private boolean dateIsCorrect(Integer day, Integer month, Integer year)
     {
         if (year < 1)
@@ -260,5 +305,8 @@ public class IdentityDocumentService extends AbstractService
         return true;
     }
 
+    /**
+     * userRepository is an instance variable of type UserRepository, used to access and manipulate user data in the database.
+     */
     private final UserRepository userRepository;
 }

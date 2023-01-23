@@ -16,12 +16,29 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * The PersonalDataService class contains methods for updating personal data of a user.
+ * <p>This class provides methods for updating phone number, first name and last name of a user.
+ * It also contains methods for checking the correctness of entered data.
+ * <p>The updatePersonalData method allows the user to choose which data they want to update.
+ * The phoneNumberIsCorrect and checkIfVarcharLengthIsNotCorrect methods check the correctness of entered data.
+ *
+ * @author Piotr Ciosmak
+ * @version 1.0
+ * @see AbstractService
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class PersonalDataService extends AbstractService
 {
+    /**
+     * This method allows the user to update their personal data.
+     * The user can choose which data they want to update by selecting the appropriate option from the menu.
+     *
+     * @param userId the user's unique identification number
+     */
     public void updatePersonalData(UserId userId)
     {
         User user = getUserById(userId, userRepository);
@@ -69,7 +86,7 @@ public class PersonalDataService extends AbstractService
                         String firstName;
                         System.out.print("Podaj imie: ");
                         firstName = scanner.nextLine();
-                        if(checkIfVarcharLengthIsNotCorrect(firstName))
+                        if (checkIfVarcharLengthIsNotCorrect(firstName))
                         {
                             FatalError.exit();
                         }
@@ -83,7 +100,7 @@ public class PersonalDataService extends AbstractService
                         String lastName;
                         System.out.print("Podaj nazwisko: ");
                         lastName = scanner.nextLine();
-                        if(checkIfVarcharLengthIsNotCorrect(lastName))
+                        if (checkIfVarcharLengthIsNotCorrect(lastName))
                         {
                             FatalError.exit();
                         }
@@ -115,6 +132,14 @@ public class PersonalDataService extends AbstractService
         }
     }
 
+    /**
+     * Creates a new instance of PersonalData, prompts the user for input and sets the properties of the instance accordingly.
+     * The user is prompted for input for the following fields: first name, last name, phone number, family name, personal identity number,
+     * birthplace, nationality, mother's name, father's name.
+     * Validates the input for each field to ensure that it meets the requirements for the field.
+     *
+     * @return A new instance of PersonalData with properties set according to user input.
+     */
     PersonalData createPersonalData()
     {
         PersonalData personalData = new PersonalData();
@@ -123,7 +148,7 @@ public class PersonalDataService extends AbstractService
         String firstName;
         System.out.print("Podaj imie: ");
         firstName = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(firstName))
+        if (checkIfVarcharLengthIsNotCorrect(firstName))
         {
             FatalError.exit();
         }
@@ -133,7 +158,7 @@ public class PersonalDataService extends AbstractService
         String lastName;
         System.out.print("Podaj nazwisko: ");
         lastName = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(lastName))
+        if (checkIfVarcharLengthIsNotCorrect(lastName))
         {
             FatalError.exit();
         }
@@ -162,7 +187,7 @@ public class PersonalDataService extends AbstractService
         String familyName;
         System.out.print("Podaj nazwisko rodowe: ");
         familyName = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(familyName))
+        if (checkIfVarcharLengthIsNotCorrect(familyName))
         {
             FatalError.exit();
         }
@@ -196,7 +221,7 @@ public class PersonalDataService extends AbstractService
         String birthPlace;
         System.out.print("Podaj miejsce urodzenia: ");
         birthPlace = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(birthPlace))
+        if (checkIfVarcharLengthIsNotCorrect(birthPlace))
         {
             FatalError.exit();
         }
@@ -206,7 +231,7 @@ public class PersonalDataService extends AbstractService
         String nationality;
         System.out.print("Podaj narodowość: ");
         nationality = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(nationality))
+        if (checkIfVarcharLengthIsNotCorrect(nationality))
         {
             FatalError.exit();
         }
@@ -216,7 +241,7 @@ public class PersonalDataService extends AbstractService
         String mothersName;
         System.out.print("Podaj nazwisko matki: ");
         mothersName = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(mothersName))
+        if (checkIfVarcharLengthIsNotCorrect(mothersName))
         {
             FatalError.exit();
         }
@@ -226,7 +251,7 @@ public class PersonalDataService extends AbstractService
         String mothersMaidenName;
         System.out.print("Podaj nazwisko paniejskie matki: ");
         mothersMaidenName = scanner.nextLine();
-        if(checkIfVarcharLengthIsNotCorrect(mothersMaidenName))
+        if (checkIfVarcharLengthIsNotCorrect(mothersMaidenName))
         {
             FatalError.exit();
         }
@@ -235,12 +260,26 @@ public class PersonalDataService extends AbstractService
         return personalData;
     }
 
+    /**
+     * The method is responsible for checking whether the entered personal identity number is unique or not.
+     *
+     * @param personalIdentityNumber - entered personal identity number
+     * @return true if the entered personal identity number is unique, false otherwise.
+     */
     private boolean personalIdentityNumberIsUnique(String personalIdentityNumber)
     {
         Optional<PersonalData> personalData = personalDataRepository.findByPersonalIdentityNumber(personalIdentityNumber);
         return personalData.isEmpty();
     }
 
+    /**
+     * The personalIdentityNumberIsCorrect method is used to check if the given personal identity number (PESEL) is correct.
+     * The method checks if the PESEL is 11 characters long and if each character is a digit.
+     *
+     * @param personalIdentityNumber - a string containing the PESEL number
+     * @return true if the PESEL is 11 characters long and if each character is a digit.
+     * @return false otherwise.
+     */
     private boolean personalIdentityNumberIsCorrect(String personalIdentityNumber)
     {
         if (personalIdentityNumber.length() == 11)
@@ -257,17 +296,38 @@ public class PersonalDataService extends AbstractService
         return false;
     }
 
+    /**
+     * Prepare phone number by removing any non-numeric characters and
+     * adding '+48' prefix if it is not present
+     *
+     * @param phoneNumber phone number as string
+     * @return prepared phone number
+     */
     private String preparePhoneNumber(String phoneNumber)
     {
         return ("+48" + phoneNumber).trim();
     }
 
+    /**
+     * This method checks if the phone number is correct.
+     * The phone number should contain only digits and should have 12 characters.
+     *
+     * @param phoneNumber phone number that is being checked
+     * @return true if phone number is correct, false otherwise
+     */
     private boolean phoneNumberIsCorrect(String phoneNumber)
     {
         String phoneNumberWithoutCodeArea = phoneNumber.substring(3);
         return phoneNumberWithoutCodeArea.matches("^[0-9]*$") && phoneNumber.length() == 12;
     }
 
+    /**
+     * userRepository is an instance variable of type UserRepository, used to access and manipulate user data in the database.
+     */
     private final UserRepository userRepository;
+
+    /**
+     * personalDataRepository is an instance variable of type PersonalDataRepository, used to access and manipulate user personal data in the database.
+     */
     private final PersonalDataRepository personalDataRepository;
 }

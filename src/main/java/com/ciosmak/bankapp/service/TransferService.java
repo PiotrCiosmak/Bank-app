@@ -22,12 +22,25 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The {@code TransferService} class is responsible for handling all transfers related operations.
+ * It enables creating, displaying and managing transfers.
+ *
+ * @author Piotr Ciosmak
+ * @version 1.0
+ * @see AbstractService
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class TransferService extends AbstractService
 {
+    /**
+     * The create method is used to create a new transfer. The method prompts the user for the title of the transfer, the amount of money to be transferred, and the account number of the recipient. The method checks if the amount of money is a valid number and if the account number is correct. The method also sets the execution date and posting date of the transfer. The method also checks if there is enough money in the account to complete the transfer.
+     *
+     * @param userId - the userId of the user making the transfer.
+     */
     public void create(UserId userId)
     {
         System.out.println("\n---WYKONAJ PRZELEW---");
@@ -125,6 +138,9 @@ public class TransferService extends AbstractService
 
     }
 
+    /**
+     * The autoMakeTransfers method is used to automatically process all pending transfers. The method retrieves all transfers from the transfer repository and iterates through them. For each transfer that has not yet been completed and has a posting date before its execution date, the method sets the transfer to done, finds the bank account associated with the receiving account number, and adds the transferred amount of money to the balance of that account.
+     */
     public void autoMakeTransfers()
     {
         ArrayList<Transfer> transfersList = transferRepository.findAll();
@@ -142,11 +158,27 @@ public class TransferService extends AbstractService
         }
     }
 
+    /**
+     * This method checks if the given account number is correct.
+     *
+     * @param accountNumber the account number to be checked
+     * @return true if the account number is correct, false otherwise
+     */
     private boolean checkIfAccountNumberIsCorrect(String accountNumber)
     {
         return accountNumber.matches("^[0-9]*$") && accountNumber.length() == 26;
     }
 
+    /**
+     * This method sets the posting date based on the execution date.
+     * If the execution date falls on a weekend, the posting date will be the next Monday at 12:00:00.
+     * If the execution date is before 12:00:00, the posting date will be the same day at 12:00:00.
+     * If the execution date is between 12:00:00 and 16:00:00, the posting date will be the same day at 16:00:00.
+     * If the execution date is after 16:00:00, the posting date will be the next day at 12:00:00.
+     *
+     * @param executionDate the execution date
+     * @return the posting date
+     */
     private LocalDateTime setPostingDate(LocalDateTime executionDate)
     {
         LocalDateTime postingDate;
@@ -169,11 +201,26 @@ public class TransferService extends AbstractService
         return postingDate;
     }
 
+    /**
+     * Checks if the account has enough money to perform a transfer.
+     *
+     * @param balance                 The current balance of the account.
+     * @param amountOfMoneyToTransfer The amount of money to be transferred from the account.
+     * @return True if the account has enough money to perform the transfer, false otherwise.
+     */
     private boolean isEnoughMoneyInAccount(BigDecimal balance, BigDecimal amountOfMoneyToTransfer)
     {
         return balance.subtract(amountOfMoneyToTransfer).compareTo(BigDecimal.ZERO) > 0;
     }
 
+    /**
+     * Allows the user to choose one bank account from a list of bank accounts associated with a user's ID.
+     *
+     * @param userId The ID of the user whose bank accounts are being displayed.
+     * @return The ID of the chosen bank account.
+     * @throws IncorrectBankAccountException if the user enters an invalid option.
+     * @throws Exception                     if a fatal error occurs.
+     */
     private Long chooseOneBankAccount(UserId userId)
     {
         ArrayList<BankAccount> bankAccountsList = bankAccountRepository.findByUserId(userId.getId());
@@ -215,7 +262,13 @@ public class TransferService extends AbstractService
         }
     }
 
-
+    /**
+     * bankAccountRepository is an instance variable of type BankAccountRepository, used to access and manipulate bank account data in the database.
+     */
     private final BankAccountRepository bankAccountRepository;
+
+    /**
+     * transferRepository is an instance variable of type TransferRepository, used to access and manipulate transfer data in the database.
+     */
     private final TransferRepository transferRepository;
 }
