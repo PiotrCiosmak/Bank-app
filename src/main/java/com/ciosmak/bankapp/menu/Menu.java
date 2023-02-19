@@ -151,7 +151,7 @@ public class Menu
     public static void desktop(UserService userService, PersonalDataService personalDataService, AddressService addressService, IdentityDocumentService identityDocumentService, BankAccountService bankAccountService, PaymentCardService paymentCardService, TransferService transferService, HistoryService historyService)
     {
         System.out.println("\n---PULPIT---");
-        System.out.println("Łączny balans: " + bankAccountService.getBalanceFromAllBankAccounts(userId));
+        System.out.println("Łączny balans: " + bankAccountService.getBalanceFromAllBankAccounts(userId) + "zł");
         System.out.println("Wydatki od początku bieżącego miesiąca: " + historyService.getExpensesForCurrentMonth(userId) + "zł");
         System.out.println("Przychody od początku bieżącego miesiąca: " + historyService.getIncomeForCurrentMonth(userId) + "zł");
         System.out.println("Ilość aktywnych rachunków: " + bankAccountService.getNumberOfOpenBankAccounts(userId));

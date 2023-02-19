@@ -31,6 +31,9 @@ public class BankAppApplication implements CommandLineRunner
      */
     public static void main(String[] args)
     {
+        //ACCOUNT FOR FAST TESTING
+        //email: test@test.pl
+        //password: Test123_
         SpringApplication.run(BankAppApplication.class, args);
     }
 
